@@ -110,8 +110,8 @@ export const MASTERCLASS_FEATURES = [
   },
   {
     icon: "Video",
-    title: "Webinar yang Rutin Diadakan",
-    desc: "Sesi live bersama mentor setiap minggu. Tanya jawab langsung dan review trading bersama.",
+    title: "MOONBAG PRIVATE Live",
+    desc: "Sesi live trading setiap weekdays, eksklusif untuk member Crypto Trader & Cuantroopers. Analisa market real-time bareng mentor.",
   },
 ];
 
