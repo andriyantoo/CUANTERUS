@@ -13,6 +13,7 @@ export const config = {
     "/signals/:path*",
     "/market-outlook/:path*",
     "/market-insight/:path*",
+    "/analisa/:path*",
     "/forum/:path*",
     "/profile/:path*",
     "/billing/:path*",

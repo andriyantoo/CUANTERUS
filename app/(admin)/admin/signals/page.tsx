@@ -59,6 +59,7 @@ export default function AdminSignalsPage() {
   const [tp3, setTp3] = useState("");
   const [productId, setProductId] = useState("");
   const [notes, setNotes] = useState("");
+  const [chartUrl, setChartUrl] = useState("");
 
   const fetchSignals = useCallback(async () => {
     const supabase = createClient();
@@ -95,6 +96,7 @@ export default function AdminSignalsPage() {
     setTp2("");
     setTp3("");
     setNotes("");
+    setChartUrl("");
   }
 
   async function handleCreate() {
@@ -115,6 +117,7 @@ export default function AdminSignalsPage() {
       take_profit_3: tp3 ? parseFloat(tp3) : null,
       product_id: productId,
       notes: notes.trim() || null,
+      chart_url: chartUrl.trim() || null,
       status: "active" as SignalStatus,
       is_published: false,
     });
@@ -290,6 +293,13 @@ export default function AdminSignalsPage() {
                 className="w-full px-4 py-2.5 rounded-xl bg-[#131318] border border-[#222229] text-[#F0F0F5] text-sm placeholder:text-[#8B949E]/60 focus:outline-none focus:ring-2 focus:ring-[#96FC03]/30 focus:border-[#96FC03]/50 resize-none"
               />
             </div>
+            <Input
+              id="chart_url"
+              label="TradingView / Chart URL (opsional)"
+              placeholder="https://www.tradingview.com/chart/..."
+              value={chartUrl}
+              onChange={(e) => setChartUrl(e.target.value)}
+            />
           </div>
           <div className="flex justify-end mt-4">
             <Button onClick={handleCreate} loading={saving}>

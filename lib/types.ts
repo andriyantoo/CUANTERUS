@@ -146,6 +146,7 @@ export interface Signal {
   take_profit_3: number | null;
   status: SignalStatus;
   notes: string | null;
+  chart_url: string | null;
   is_published: boolean;
   published_at: string | null;
   closed_at: string | null;
