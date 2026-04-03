@@ -1,7 +1,6 @@
 "use client";
 
 import { useUser } from "@/hooks/useUser";
-import { useSubscription } from "@/hooks/useSubscription";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -18,8 +17,7 @@ const quickLinks = [
 ];
 
 export default function DashboardPage() {
-  const { user, profile } = useUser();
-  const { activeSubscription, loading } = useSubscription(user?.id);
+  const { profile, subscription: activeSubscription, loading } = useUser();
 
   const daysLeft = activeSubscription ? daysUntil(activeSubscription.expires_at) : 0;
   const isExpiringSoon = daysLeft > 0 && daysLeft <= 14;

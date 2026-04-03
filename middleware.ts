@@ -6,7 +6,18 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
+  // Only run middleware on protected routes — skip everything else
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/dashboard/:path*",
+    "/courses/:path*",
+    "/signals/:path*",
+    "/market-outlook/:path*",
+    "/market-insight/:path*",
+    "/forum/:path*",
+    "/profile/:path*",
+    "/billing/:path*",
+    "/admin/:path*",
+    "/login",
+    "/register",
   ],
 };

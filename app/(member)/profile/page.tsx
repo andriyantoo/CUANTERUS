@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { useUser } from "@/hooks/useUser";
+import { useUser, invalidateUserCache } from "@/hooks/useUser";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -49,6 +49,7 @@ export default function ProfilePage() {
       toast.error("Gagal menyimpan profil.");
     } else {
       toast.success("Profil berhasil disimpan!");
+      invalidateUserCache();
     }
     setSaving(false);
   };
