@@ -140,52 +140,152 @@ export const ABOUT = {
 };
 
 // ── Pricing section ─────────────────────────────
-// GANTI HARGA DI SINI
+// GANTI HARGA & LINK DI SINI
 export const PRICING_SECTION = {
   badge: "Harga",
   headline: "Investasi di Skill yang",
   headlineAccent: "Menghasilkan Seumur Hidup",
 };
 
-export const PRICING_PLANS = [
+export const PRICING_PRODUCTS = [
   {
-    name: "1 Bulan",
-    price: "499.000",
-    period: "/bulan",
-    popular: false,
-    features: [
-      "Akses semua kursus",
-      "Sinyal trading",
-      "Grup komunitas",
-      "Weekly webinar",
+    tab: "Forex Trading",
+    plans: [
+      {
+        name: "1 Bulan",
+        originalPrice: "750.000",
+        price: "700.000",
+        popular: false,
+        features: [
+          "Market Outlook",
+          "Discord Access to Forex Signal",
+          "Discord Voice Chat Access",
+          "Free Consultation",
+        ],
+        ctaLink: CTA_LINK,
+      },
+      {
+        name: "3 Bulan",
+        originalPrice: "2.150.000",
+        price: "1.750.000",
+        popular: false,
+        features: [
+          "Market Outlook",
+          "Discord Access to Forex Signal",
+          "Discord Voice Chat Access",
+          "Free Consultation",
+        ],
+        ctaLink: CTA_LINK,
+      },
+      {
+        name: "6 Bulan",
+        originalPrice: "4.200.000",
+        price: "3.500.000",
+        popular: true,
+        features: [
+          "Market Outlook",
+          "Discord Access to Forex Signal",
+          "Discord Voice Chat Access",
+          "Access on Crypto & Forex Live Trading",
+          "Free Consultation",
+        ],
+        ctaLink: CTA_LINK,
+      },
+      {
+        name: "12 Bulan",
+        originalPrice: "7.500.000",
+        price: "6.000.000",
+        popular: false,
+        features: [
+          "Market Outlook",
+          "Discord Access to Forex Signal",
+          "Discord Voice Chat Access",
+          "Access on Crypto & Forex Live Trading",
+          "Free Consultation",
+        ],
+        ctaLink: CTA_LINK,
+      },
     ],
-    ctaLink: CTA_LINK,
   },
   {
-    name: "3 Bulan",
-    price: "399.000",
-    period: "/bulan",
-    popular: true,
-    features: [
-      "Semua fitur 1 Bulan",
-      "Hemat 20%",
-      "Prioritas support",
-      "Bonus materi eksklusif",
+    tab: "Crypto Trading",
+    plans: [
+      {
+        name: "6 Bulan",
+        originalPrice: "5.500.000",
+        price: "4.500.000",
+        popular: true,
+        features: [
+          "Market Outlook",
+          "Discord Access to Crypto Signal",
+          "Discord Voice Chat Access",
+          "Access on Crypto & Forex Live Trading",
+          "Free Consultation",
+        ],
+        ctaLink: CTA_LINK,
+      },
+      {
+        name: "12 Bulan",
+        originalPrice: "9.500.000",
+        price: "7.700.000",
+        popular: false,
+        features: [
+          "Market Outlook",
+          "Discord Access to Crypto Signal",
+          "Discord Voice Chat Access",
+          "Access on Crypto & Forex Live Trading",
+          "Free Consultation",
+        ],
+        ctaLink: CTA_LINK,
+      },
     ],
-    ctaLink: CTA_LINK,
   },
   {
-    name: "12 Bulan",
-    price: "249.000",
-    period: "/bulan",
-    popular: false,
-    features: [
-      "Semua fitur 3 Bulan",
-      "Hemat 50%",
-      "1-on-1 mentoring",
-      "Akses komunitas selamanya",
+    tab: "Cuantroopers",
+    plans: [
+      {
+        name: "3 Bulan",
+        originalPrice: "5.000.000",
+        price: "4.200.000",
+        popular: false,
+        features: [
+          "Market Outlook",
+          "Discord Access to Forex & Crypto Signal",
+          "Discord Voice Chat Access",
+          "Access on Crypto & Forex Live Trading",
+          "Monthly Webinar",
+        ],
+        ctaLink: CTA_LINK,
+      },
+      {
+        name: "6 Bulan",
+        originalPrice: "7.500.000",
+        price: "6.300.000",
+        popular: true,
+        features: [
+          "Market Outlook",
+          "Discord Access to Forex & Crypto Signal",
+          "Discord Voice Chat Access",
+          "Access on Crypto & Forex Live Trading",
+          "Monthly Webinar",
+        ],
+        ctaLink: CTA_LINK,
+      },
+      {
+        name: "12 Bulan",
+        originalPrice: "12.000.000",
+        price: "9.500.000",
+        popular: false,
+        features: [
+          "Market Outlook",
+          "Discord Access to Forex & Crypto Signal",
+          "Discord Voice Chat Access",
+          "Access on Crypto & Forex Live Trading",
+          "Monthly Webinar",
+        ],
+        ctaLink: CTA_LINK,
+      },
     ],
-    ctaLink: CTA_LINK,
   },
 ];
 

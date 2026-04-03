@@ -14,7 +14,7 @@ import {
   COMMUNITY,
   ABOUT,
   PRICING_SECTION,
-  PRICING_PLANS,
+  PRICING_PRODUCTS,
   TESTIMONIALS_SECTION,
   TESTIMONIALS,
   FAQS,
@@ -266,6 +266,131 @@ function CheckIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={LIME} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="20 6 9 17 4 12" />
     </svg>
+  );
+}
+
+// ═══════════════════════════════════════════════
+//  PRICING SECTION (tabbed per product)
+// ═══════════════════════════════════════════════
+
+function PricingSection() {
+  const [activeTab, setActiveTab] = useState(0);
+  const activeProduct = PRICING_PRODUCTS[activeTab];
+
+  return (
+    <Section
+      id="pricing"
+      className="py-16 md:py-24"
+      style={{ background: `linear-gradient(180deg, ${DARK_CARD} 0%, ${DARK_BG} 100%)` }}
+    >
+      <FadeIn>
+        <div className="text-center mb-10">
+          <Badge>{PRICING_SECTION.badge}</Badge>
+          <h2 className="text-2xl md:text-3xl font-bold mt-4">
+            {PRICING_SECTION.headline} <span style={{ color: LIME }}>{PRICING_SECTION.headlineAccent}</span>
+          </h2>
+        </div>
+      </FadeIn>
+
+      {/* ── Product tabs ── */}
+      <FadeIn delay={0.1}>
+        <div className="flex justify-center mb-10">
+          <div
+            className="inline-flex rounded-xl p-1 gap-1"
+            style={{ background: DARK_CARD, border: `1px solid ${BORDER}` }}
+          >
+            {PRICING_PRODUCTS.map((product, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveTab(i)}
+                className="px-4 md:px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 uppercase tracking-wide"
+                style={
+                  activeTab === i
+                    ? { background: LIME, color: DARK_BG }
+                    : { background: "transparent", color: TEXT_SEC }
+                }
+              >
+                {product.tab}
+              </button>
+            ))}
+          </div>
+        </div>
+      </FadeIn>
+
+      {/* ── Plan cards ── */}
+      <div
+        className={`grid gap-6 max-w-5xl mx-auto ${
+          activeProduct.plans.length === 2
+            ? "md:grid-cols-2 max-w-3xl"
+            : activeProduct.plans.length === 3
+            ? "md:grid-cols-3 max-w-4xl"
+            : "md:grid-cols-2 lg:grid-cols-4"
+        }`}
+      >
+        {activeProduct.plans.map((plan, i) => (
+          <FadeIn key={`${activeTab}-${i}`} delay={i * 0.1}>
+            <div
+              className="glass-card p-6 md:p-8 flex flex-col h-full transition-all duration-300 hover:-translate-y-1 relative"
+              style={
+                plan.popular
+                  ? { border: `2px solid ${LIME}`, boxShadow: `0 0 40px ${LIME}15` }
+                  : {}
+              }
+            >
+              {plan.popular && (
+                <div
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-bold uppercase px-4 py-1 rounded-full whitespace-nowrap"
+                  style={{ background: LIME, color: DARK_BG }}
+                >
+                  Best Value
+                </div>
+              )}
+              <h3 className="text-lg font-bold mb-4 uppercase">{plan.name}</h3>
+
+              <div className="space-y-3 flex-1 mb-6">
+                {plan.features.map((feat, fi) => (
+                  <div key={fi} className="flex items-start gap-2">
+                    <div className="mt-0.5 flex-shrink-0">
+                      <CheckIcon />
+                    </div>
+                    <span className="text-sm" style={{ color: TEXT_SEC }}>
+                      {feat}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* original price (strikethrough) */}
+              <div className="mb-1">
+                <span
+                  className="inline-block text-sm font-semibold line-through px-2 py-0.5 rounded"
+                  style={{ background: "#dc262622", color: "#f87171" }}
+                >
+                  Rp. {plan.originalPrice}
+                </span>
+              </div>
+
+              {/* actual price */}
+              <div className="flex items-baseline gap-1 mb-5">
+                <span className="text-xs font-medium" style={{ color: TEXT_SEC }}>
+                  Rp.
+                </span>
+                <span
+                  className="text-3xl font-extrabold font-mono"
+                  style={{ color: plan.popular ? LIME : TEXT }}
+                >
+                  {plan.price}
+                </span>
+              </div>
+
+              <CTAButton href={plan.ctaLink} small secondary={!plan.popular}>
+                Daftar Sekarang
+              </CTAButton>
+            </div>
+          </FadeIn>
+        ))}
+      </div>
+    </Section>
   );
 }
 
@@ -595,71 +720,7 @@ export default function Homepage() {
       <div className="glow-line" />
 
       {/* ═══ PRICING ═══ */}
-      <Section
-        id="pricing"
-        className="py-16 md:py-24"
-        style={{ background: `linear-gradient(180deg, ${DARK_CARD} 0%, ${DARK_BG} 100%)` }}
-      >
-        <FadeIn>
-          <div className="text-center mb-12">
-            <Badge>{PRICING_SECTION.badge}</Badge>
-            <h2 className="text-2xl md:text-3xl font-bold mt-4">
-              {PRICING_SECTION.headline} <span style={{ color: LIME }}>{PRICING_SECTION.headlineAccent}</span>
-            </h2>
-          </div>
-        </FadeIn>
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {PRICING_PLANS.map((plan, i) => (
-            <FadeIn key={i} delay={i * 0.12}>
-              <div
-                className="glass-card p-6 md:p-8 flex flex-col h-full transition-all duration-300 hover:-translate-y-1 relative"
-                style={
-                  plan.popular
-                    ? { border: `2px solid ${LIME}`, boxShadow: `0 0 40px ${LIME}15` }
-                    : {}
-                }
-              >
-                {plan.popular && (
-                  <div
-                    className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-bold uppercase px-4 py-1 rounded-full"
-                    style={{ background: LIME, color: DARK_BG }}
-                  >
-                    Paling Populer
-                  </div>
-                )}
-                <h3 className="text-lg font-bold mb-2">{plan.name}</h3>
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-xs" style={{ color: TEXT_SEC }}>
-                    Rp
-                  </span>
-                  <span
-                    className="text-3xl font-extrabold font-mono"
-                    style={{ color: plan.popular ? LIME : TEXT }}
-                  >
-                    {plan.price}
-                  </span>
-                  <span className="text-sm" style={{ color: TEXT_SEC }}>
-                    {plan.period}
-                  </span>
-                </div>
-                <div className="space-y-3 flex-1 mb-6">
-                  {plan.features.map((feat, fi) => (
-                    <div key={fi} className="flex items-center gap-2">
-                      <CheckIcon />
-                      <span className="text-sm" style={{ color: TEXT_SEC }}>
-                        {feat}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-                <CTAButton href={plan.ctaLink} small secondary={!plan.popular}>
-                  Daftar Sekarang
-                </CTAButton>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </Section>
+      <PricingSection />
 
       {/* ═══ TESTIMONIALS ═══ */}
       <Section id="testimoni" className="py-16 md:py-24">
