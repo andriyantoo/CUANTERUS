@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/Input";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { PRODUCT_NAMES } from "@/lib/constants";
 import type { ForumChannel, Product } from "@/lib/types";
-import { Plus, Hash, Megaphone, MessageSquare, Trash2, Eye, EyeOff, GripVertical } from "lucide-react";
+import { Plus, Hash, Megaphone, MessageSquare, Trash2, Eye, EyeOff, Link2, Save, MessageCircle } from "lucide-react";
+import { toast } from "sonner";
 
 export default function AdminForumPage() {
   const [channels, setChannels] = useState<ForumChannel[]>([]);
@@ -25,6 +26,11 @@ export default function AdminForumPage() {
   const [productId, setProductId] = useState("");
   const [channelType, setChannelType] = useState("text");
   const [saving, setSaving] = useState(false);
+
+  // Discord webhook editing
+  const [editingWebhook, setEditingWebhook] = useState<string | null>(null);
+  const [webhookUrl, setWebhookUrl] = useState("");
+  const [savingWebhook, setSavingWebhook] = useState(false);
 
   const supabase = createClient();
 
@@ -64,6 +70,18 @@ export default function AdminForumPage() {
     setName(""); setSlug(""); setIcon(""); setDescription(""); setProductId(""); setChannelType("text");
     setShowForm(false);
     setSaving(false);
+    fetchData();
+  }
+
+  async function saveWebhook(channelId: string) {
+    setSavingWebhook(true);
+    await supabase
+      .from("forum_channels")
+      .update({ discord_webhook_url: webhookUrl.trim() || null })
+      .eq("id", channelId);
+    toast.success("Discord webhook disimpan!");
+    setSavingWebhook(false);
+    setEditingWebhook(null);
     fetchData();
   }
 
@@ -147,21 +165,49 @@ export default function AdminForumPage() {
           <div className="space-y-1">
             {chs.map((ch) => {
               const TypeIcon = typeIcons[ch.channel_type] || Hash;
+              const hasWebhook = !!(ch as any).discord_webhook_url;
               return (
-                <div key={ch.id} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[#131318] border border-[#222229]">
-                  <TypeIcon size={16} className="text-[#8B949E] flex-shrink-0" />
-                  <span className="text-sm">{ch.icon}</span>
-                  <span className="text-sm font-medium text-[#F0F0F5] flex-1">{ch.name}</span>
-                  <Badge variant={ch.is_active ? "lime" : "gray"} className="text-[10px]">
-                    {ch.is_active ? "Active" : "Hidden"}
-                  </Badge>
-                  <Badge variant="gray" className="text-[10px]">{ch.channel_type}</Badge>
-                  <Button size="sm" variant="ghost" onClick={() => toggleActive(ch)}>
-                    {ch.is_active ? <EyeOff size={14} /> : <Eye size={14} />}
-                  </Button>
-                  <Button size="sm" variant="danger" onClick={() => handleDelete(ch.id)}>
-                    <Trash2 size={14} />
-                  </Button>
+                <div key={ch.id} className="rounded-xl bg-[#131318] border border-[#222229]">
+                  <div className="flex items-center gap-3 px-4 py-3">
+                    <TypeIcon size={16} className="text-[#8B949E] flex-shrink-0" />
+                    <span className="text-sm">{ch.icon}</span>
+                    <span className="text-sm font-medium text-[#F0F0F5] flex-1">{ch.name}</span>
+                    {hasWebhook && (
+                      <Badge variant="blue" className="text-[10px]">
+                        <MessageCircle size={10} className="mr-1" />Discord
+                      </Badge>
+                    )}
+                    <Badge variant={ch.is_active ? "lime" : "gray"} className="text-[10px]">
+                      {ch.is_active ? "Active" : "Hidden"}
+                    </Badge>
+                    <Badge variant="gray" className="text-[10px]">{ch.channel_type}</Badge>
+                    <Button size="sm" variant="ghost" onClick={() => {
+                      setEditingWebhook(editingWebhook === ch.id ? null : ch.id);
+                      setWebhookUrl((ch as any).discord_webhook_url || "");
+                    }}>
+                      <Link2 size={14} />
+                    </Button>
+                    <Button size="sm" variant="ghost" onClick={() => toggleActive(ch)}>
+                      {ch.is_active ? <EyeOff size={14} /> : <Eye size={14} />}
+                    </Button>
+                    <Button size="sm" variant="danger" onClick={() => handleDelete(ch.id)}>
+                      <Trash2 size={14} />
+                    </Button>
+                  </div>
+                  {editingWebhook === ch.id && (
+                    <div className="px-4 pb-3 flex items-center gap-2">
+                      <input
+                        type="text"
+                        placeholder="Discord Webhook URL (dari Channel Settings → Integrations → Webhooks)"
+                        value={webhookUrl}
+                        onChange={(e) => setWebhookUrl(e.target.value)}
+                        className="flex-1 px-3 py-2 rounded-lg bg-[#0A0A0F] border border-[#222229] text-[#F0F0F5] text-xs placeholder:text-[#8B949E]/60 focus:outline-none focus:ring-1 focus:ring-[#96FC03]/30"
+                      />
+                      <Button size="sm" loading={savingWebhook} onClick={() => saveWebhook(ch.id)}>
+                        <Save size={14} />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               );
             })}

@@ -82,6 +82,22 @@ export default function ThreadPage() {
       author_id: user.id,
       body: replyBody,
     });
+
+    // Sync reply to Discord if admin
+    if (profile?.role === "admin" && thread?.channel_id) {
+      fetch("/api/discord/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "reply",
+          channel_id: thread.channel_id,
+          title: thread.title,
+          body: replyBody,
+          thread_url: `/forum/${channelSlug}/${threadId}`,
+        }),
+      }).catch(() => {});
+    }
+
     setReplyBody("");
     setSubmitting(false);
     fetchThread();

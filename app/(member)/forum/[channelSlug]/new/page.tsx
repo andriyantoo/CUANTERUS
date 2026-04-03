@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useUser } from "@/hooks/useUser";
+import { useUser } from "@/hooks/useUser";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Card, CardTitle } from "@/components/ui/Card";
@@ -14,7 +15,7 @@ import Link from "next/link";
 export default function NewThreadPage() {
   const { channelSlug } = useParams<{ channelSlug: string }>();
   const router = useRouter();
-  const { user } = useUser();
+  const { user, profile } = useUser();
   const [channel, setChannel] = useState<ForumChannel | null>(null);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
@@ -64,6 +65,21 @@ export default function NewThreadPage() {
       setError(insertError.message);
       setLoading(false);
       return;
+    }
+
+    // Sync to Discord if admin
+    if (profile?.role === "admin" && channel) {
+      fetch("/api/discord/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          type: "thread",
+          channel_id: channel.id,
+          title,
+          body,
+          thread_url: `/forum/${channelSlug}/${data.id}`,
+        }),
+      }).catch(() => {}); // fire and forget
     }
 
     router.push(`/forum/${channelSlug}/${data.id}`);

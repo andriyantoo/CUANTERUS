@@ -201,6 +201,8 @@ export interface ForumChannel {
   is_pinned: boolean;
   sort_order: number;
   is_active: boolean;
+  discord_channel_id: string | null;
+  discord_webhook_url: string | null;
   created_at: string;
   product?: Product;
   thread_count?: number;
