@@ -56,14 +56,14 @@ export default function AdminMarketInsightPage() {
       // Upload PDF to Supabase Storage
       const fileName = `${Date.now()}_${file.name}`;
       const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("market-insights")
+        .from("market-insight")
         .upload(fileName, file, { contentType: "application/pdf" });
 
       if (uploadError) throw uploadError;
 
       // Get public URL
       const { data: urlData } = supabase.storage
-        .from("market-insights")
+        .from("market-insight")
         .getPublicUrl(fileName);
 
       // Create record
