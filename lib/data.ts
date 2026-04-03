@@ -59,25 +59,25 @@ export const PROGRAMS_SECTION = {
 
 export const PROGRAMS = [
   {
-    title: "Smart Triggers",
-    desc: "Sinyal trading otomatis langsung ke HP kamu. Cocok buat yang ga punya waktu mantau chart seharian.",
-    audience: "Cocok buat: yang udah ngerti basic tapi butuh sinyal akurat.",
+    title: "Crypto Trader",
+    desc: "Kuasai market crypto dari nol. Belajar analisa, strategi entry-exit, dan manajemen risiko khusus crypto.",
+    audience: "Cocok buat: yang mau fokus profit di market crypto.",
     tag: "Populer",
     ctaText: "Lihat Detail",
     ctaLink: CTA_LINK,
   },
   {
-    title: "Panen Trading",
-    desc: "Belajar strategi trading dari nol sampai bisa profit konsisten. Full video + mentoring.",
-    audience: "Cocok buat: pemula yang mau belajar dari nol sampai mahir.",
+    title: "Forex Trader",
+    desc: "Pelajari strategi trading forex yang proven. Dari reading chart sampai konsisten profit di pair mayor.",
+    audience: "Cocok buat: yang mau trading di market forex global.",
     tag: "Terlaris",
     ctaText: "Daftar Sekarang",
     ctaLink: CTA_LINK,
     highlighted: true,
   },
   {
-    title: "Komplet Trading",
-    desc: "Paket lengkap: kursus + sinyal + komunitas + webinar. Semua yang kamu butuhkan dalam satu paket.",
+    title: "Cuantroopers",
+    desc: "Paket lengkap: kursus crypto + forex, sinyal real-time, komunitas eksklusif, dan webinar mingguan.",
     audience: "Cocok buat: yang mau all-in dan serius jadi full-time trader.",
     tag: "Terlengkap",
     ctaText: "Lihat Detail",
