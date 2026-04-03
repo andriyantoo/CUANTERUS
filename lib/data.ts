@@ -162,7 +162,7 @@ export const PRICING_PRODUCTS = [
           "Discord Voice Chat Access",
           "Free Consultation",
         ],
-        ctaLink: CTA_LINK,
+        ctaLink: "https://cuanterus.in/member/signup/forex1month",
       },
       {
         name: "3 Bulan",
@@ -175,7 +175,7 @@ export const PRICING_PRODUCTS = [
           "Discord Voice Chat Access",
           "Free Consultation",
         ],
-        ctaLink: CTA_LINK,
+        ctaLink: "https://cuanterus.in/member/signup/forex3month",
       },
       {
         name: "6 Bulan",
@@ -188,7 +188,7 @@ export const PRICING_PRODUCTS = [
           "Discord Voice Chat Access",
           "Free Consultation",
         ],
-        ctaLink: CTA_LINK,
+        ctaLink: "https://cuanterus.in/member/signup/forex6month",
       },
       {
         name: "12 Bulan",
@@ -201,7 +201,7 @@ export const PRICING_PRODUCTS = [
           "Discord Voice Chat Access",
           "Free Consultation",
         ],
-        ctaLink: CTA_LINK,
+        ctaLink: "https://cuanterus.in/member/signup/forex12month",
       },
     ],
   },
