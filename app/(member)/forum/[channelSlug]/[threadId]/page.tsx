@@ -175,7 +175,7 @@ export default function ThreadPage() {
             <button
               key={rt}
               onClick={() => toggleReaction(targetId, type, rt)}
-              className={`flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition-colors ${
+              className={`flex items-center gap-1 text-sm px-3 py-2 min-h-[44px] rounded-lg transition-colors ${
                 active
                   ? "bg-[#96FC03]/10 text-[#96FC03]"
                   : "text-[#8B949E] hover:bg-[#222229] hover:text-[#F0F0F5]"
@@ -294,10 +294,10 @@ export default function ThreadPage() {
                   </span>
                 </div>
               </div>
-              <div className="text-sm text-[#F0F0F5]/90 leading-relaxed whitespace-pre-wrap ml-10">
+              <div className="text-sm text-[#F0F0F5]/90 leading-relaxed whitespace-pre-wrap ml-0 sm:ml-10">
                 {reply.body}
               </div>
-              <div className="ml-10">
+              <div className="ml-0 sm:ml-10">
                 {renderReactions(reply.id, "reply")}
               </div>
             </Card>

@@ -159,7 +159,7 @@ export default function ChannelPage() {
                 </div>
 
                 {/* Stats */}
-                <div className="flex items-center gap-4 flex-shrink-0 text-xs text-[#8B949E]">
+                <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0 text-xs text-[#8B949E]">
                   <div className="flex items-center gap-1" title="Upvotes">
                     <ChevronUp size={14} />
                     {thread.upvote_count}

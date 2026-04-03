@@ -194,7 +194,7 @@ export default function MarketInsightPage() {
                   <div className="w-full mt-4 sm:col-span-full">
                     <iframe
                       src={insight.file_url}
-                      className="w-full h-[600px] rounded-xl border border-[#222229]"
+                      className="w-full h-[350px] sm:h-[500px] md:h-[600px] rounded-xl border border-[#222229]"
                       title={insight.title}
                     />
                   </div>

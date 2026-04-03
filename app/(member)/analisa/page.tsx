@@ -79,7 +79,7 @@ export default function AnalisaPage() {
 
       {/* TradingView Chart Embed */}
       <Card className="p-0 overflow-hidden">
-        <div className="h-[500px] md:h-[600px]">
+        <div className="h-[300px] sm:h-[450px] md:h-[600px]">
           <iframe
             key={activeChart}
             src={`https://s.tradingview.com/widgetembed/?symbol=${activeChart}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=131318&studies=[]&theme=dark&style=1&timezone=Asia%2FJakarta&withdateranges=1&showpopupbutton=1&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=id&utm_source=cuanterus`}

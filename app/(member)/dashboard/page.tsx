@@ -84,7 +84,7 @@ export default function DashboardPage() {
       )}
 
       {/* Quick Links */}
-      <div className="grid sm:grid-cols-3 gap-4">
+      <div className="grid sm:grid-cols-3 gap-3 sm:gap-4">
         {quickLinks.map((item) => (
           <Link key={item.href} href={item.href}>
             <Card hover className="h-full">

@@ -375,7 +375,7 @@ function PricingSection({ activeTab, setActiveTab }: { activeTab: number; setAct
                   Rp.
                 </span>
                 <span
-                  className="text-3xl font-extrabold font-mono"
+                  className="text-2xl sm:text-3xl font-extrabold font-mono"
                   style={{ color: plan.popular ? LIME : TEXT }}
                 >
                   {plan.price}
@@ -557,7 +557,7 @@ export default function Homepage() {
             </h2>
           </div>
         </FadeIn>
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-4 md:gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 md:gap-6">
           {FEATURES.map((f, i) => (
             <FadeIn key={i} delay={i * 0.08}>
               <div className="glass-card p-4 md:p-6 text-center">
