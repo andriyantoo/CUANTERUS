@@ -447,7 +447,14 @@ export default function Homepage() {
             ))}
           </div>
 
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-3">
+            <a
+              href="/login"
+              className="text-sm font-medium transition-colors duration-200 hover:text-white"
+              style={{ color: TEXT_SEC }}
+            >
+              Masuk
+            </a>
             <CTAButton href={CTA_LINK} small>
               Daftar Sekarang
             </CTAButton>
@@ -490,6 +497,14 @@ export default function Homepage() {
                 {item}
               </a>
             ))}
+            <a
+              href="/login"
+              className="text-base font-medium py-2"
+              style={{ color: LIME }}
+              onClick={() => setMobileMenu(false)}
+            >
+              Masuk
+            </a>
             <CTAButton href={CTA_LINK} small>
               Daftar Sekarang
             </CTAButton>
