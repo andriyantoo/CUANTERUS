@@ -46,7 +46,7 @@ export async function GET(request: Request) {
         .select("product_id, discord_role_id");
 
       // For each expired user, sync Discord roles
-      const userIds = [...new Set(expiredSubs.map((s) => s.user_id))];
+      const userIds = Array.from(new Set(expiredSubs.map((s) => s.user_id)));
 
       for (const userId of userIds) {
         // Get user's remaining active subscriptions

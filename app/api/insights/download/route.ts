@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import { PDFDocument, rgb, StandardFonts, degrees } from "pdf-lib";
 
 export async function GET(request: Request) {
   try {
@@ -74,7 +74,7 @@ export async function GET(request: Request) {
             font: helvetica,
             color: rgb(0.7, 0.7, 0.7),
             opacity: 0.15,
-            rotate: { type: "degrees" as const, angle: 35 },
+            rotate: degrees(35),
           });
         }
       }
@@ -108,7 +108,7 @@ export async function GET(request: Request) {
 
     const fileName = insight.file_name.replace(/\.pdf$/i, "") + "_watermarked.pdf";
 
-    return new NextResponse(watermarkedPdf, {
+    return new NextResponse(Buffer.from(watermarkedPdf), {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="${fileName}"`,

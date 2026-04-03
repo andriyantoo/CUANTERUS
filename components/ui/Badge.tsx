@@ -4,6 +4,7 @@ interface BadgeProps {
   children: React.ReactNode;
   variant?: "lime" | "blue" | "amber" | "red" | "gray";
   className?: string;
+  style?: React.CSSProperties;
 }
 
 const variantStyles = {
@@ -14,7 +15,7 @@ const variantStyles = {
   gray: "bg-[#222229] text-[#8B949E] border-[#222229]",
 };
 
-export function Badge({ children, variant = "lime", className }: BadgeProps) {
+export function Badge({ children, variant = "lime", className, style }: BadgeProps) {
   return (
     <span
       className={cn(
@@ -22,6 +23,7 @@ export function Badge({ children, variant = "lime", className }: BadgeProps) {
         variantStyles[variant],
         className
       )}
+      style={style}
     >
       {children}
     </span>
