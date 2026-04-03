@@ -167,3 +167,63 @@ export interface MarketInsight {
   updated_at: string;
   product?: Product;
 }
+
+// Forum types
+export type ChannelType = "text" | "forum" | "announcement";
+export type ReactionType = "upvote" | "helpful" | "fire" | "eyes";
+
+export interface ForumChannel {
+  id: string;
+  product_id: string | null;
+  name: string;
+  slug: string;
+  description: string | null;
+  icon: string | null;
+  channel_type: ChannelType;
+  is_pinned: boolean;
+  sort_order: number;
+  is_active: boolean;
+  created_at: string;
+  product?: Product;
+  thread_count?: number;
+}
+
+export interface ForumThread {
+  id: string;
+  channel_id: string;
+  author_id: string;
+  title: string;
+  body: string;
+  tags: string[];
+  is_pinned: boolean;
+  is_solved: boolean;
+  is_locked: boolean;
+  upvote_count: number;
+  reply_count: number;
+  last_activity_at: string;
+  created_at: string;
+  updated_at: string;
+  author?: Profile;
+  channel?: ForumChannel;
+}
+
+export interface ForumReply {
+  id: string;
+  thread_id: string;
+  author_id: string;
+  body: string;
+  is_best_answer: boolean;
+  upvote_count: number;
+  created_at: string;
+  updated_at: string;
+  author?: Profile;
+}
+
+export interface ForumReaction {
+  id: string;
+  user_id: string;
+  thread_id: string | null;
+  reply_id: string | null;
+  reaction_type: ReactionType;
+  created_at: string;
+}

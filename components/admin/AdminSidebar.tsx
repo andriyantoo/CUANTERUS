@@ -10,6 +10,7 @@ import {
   TrendingUp,
   BarChart3,
   FileText,
+  MessageSquare,
   CreditCard,
   ArrowLeft,
   X,
@@ -23,6 +24,7 @@ const navItems = [
   { href: "/admin/signals", label: "Signals", icon: TrendingUp },
   { href: "/admin/market-outlook", label: "Market Outlook", icon: BarChart3 },
   { href: "/admin/market-insight", label: "Market Insight", icon: FileText },
+  { href: "/admin/forum", label: "Forum", icon: MessageSquare },
   { href: "/admin/payments", label: "Payments", icon: CreditCard },
 ];
 

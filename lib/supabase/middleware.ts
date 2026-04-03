@@ -32,7 +32,7 @@ export async function updateSession(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // Protected member routes
-  const memberRoutes = ["/dashboard", "/courses", "/signals", "/market-outlook", "/market-insight", "/profile", "/billing"];
+  const memberRoutes = ["/dashboard", "/courses", "/signals", "/market-outlook", "/market-insight", "/forum", "/profile", "/billing"];
   const isMemberRoute = memberRoutes.some((route) => pathname.startsWith(route));
 
   // Protected admin routes
