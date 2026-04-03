@@ -273,8 +273,7 @@ function CheckIcon() {
 //  PRICING SECTION (tabbed per product)
 // ═══════════════════════════════════════════════
 
-function PricingSection() {
-  const [activeTab, setActiveTab] = useState(0);
+function PricingSection({ activeTab, setActiveTab }: { activeTab: number; setActiveTab: (i: number) => void }) {
   const activeProduct = PRICING_PRODUCTS[activeTab];
 
   return (
@@ -401,6 +400,7 @@ function PricingSection() {
 export default function Homepage() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -643,9 +643,20 @@ export default function Homepage() {
                   </p>
                 )}
                 <div className="mt-6">
-                  <CTAButton href={p.ctaLink} small secondary={!p.highlighted}>
+                  <button
+                    onClick={() => {
+                      setActiveTab(p.pricingTab);
+                      document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className={`inline-flex items-center justify-center font-bold rounded-xl transition-all duration-300 hover:scale-[1.03] text-sm px-5 py-2.5`}
+                    style={
+                      p.highlighted
+                        ? { background: LIME, color: DARK_BG, boxShadow: `0 0 24px ${LIME}30` }
+                        : { background: "transparent", color: TEXT, border: `1.5px solid ${BORDER}` }
+                    }
+                  >
                     {p.ctaText}
-                  </CTAButton>
+                  </button>
                 </div>
               </div>
             </FadeIn>
@@ -720,7 +731,7 @@ export default function Homepage() {
       <div className="glow-line" />
 
       {/* ═══ PRICING ═══ */}
-      <PricingSection />
+      <PricingSection activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* ═══ TESTIMONIALS ═══ */}
       <Section id="testimoni" className="py-16 md:py-24">

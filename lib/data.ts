@@ -63,16 +63,16 @@ export const PROGRAMS = [
     desc: "Kuasai market crypto dari nol. Belajar analisa, strategi entry-exit, dan manajemen risiko khusus crypto.",
     audience: "Cocok buat: yang mau fokus profit di market crypto.",
     tag: "Populer",
-    ctaText: "Lihat Detail",
-    ctaLink: CTA_LINK,
+    ctaText: "Lihat Harga & Benefit",
+    pricingTab: 1, // index of "Crypto Trading" tab
   },
   {
     title: "Forex Trader",
     desc: "Pelajari strategi trading forex yang proven. Dari reading chart sampai konsisten profit di pair mayor.",
     audience: "Cocok buat: yang mau trading di market forex global.",
     tag: "Terlaris",
-    ctaText: "Daftar Sekarang",
-    ctaLink: CTA_LINK,
+    ctaText: "Lihat Harga & Benefit",
+    pricingTab: 0, // index of "Forex Trading" tab
     highlighted: true,
   },
   {
@@ -80,8 +80,8 @@ export const PROGRAMS = [
     desc: "Paket lengkap: kursus crypto + forex, sinyal real-time, komunitas eksklusif, dan webinar mingguan.",
     audience: "Cocok buat: yang mau all-in dan serius jadi full-time trader.",
     tag: "Terlengkap",
-    ctaText: "Lihat Detail",
-    ctaLink: CTA_LINK,
+    ctaText: "Lihat Harga & Benefit",
+    pricingTab: 2, // index of "Cuantroopers" tab
   },
 ];
 
