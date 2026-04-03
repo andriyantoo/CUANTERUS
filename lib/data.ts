@@ -6,7 +6,7 @@
 
 // ── Link CTA utama ──────────────────────────────
 // Ganti "#" ke URL A Member / Xendit lo yang beneran
-export const CTA_LINK = "#";
+export const CTA_LINK = "#pricing";
 
 // ── Social media links ──────────────────────────
 export const SOCIALS = {
@@ -21,10 +21,10 @@ export const SOCIALS = {
 // ── Hero section ────────────────────────────────
 export const HERO = {
   badge: "Dipercaya 5,000+ Trader Indonesia",
-  headline: "Market Merah?",
-  headlineAccent: "Tetap Profit.",
+  headline: "Belajar Trading yang",
+  headlineAccent: "Terstruktur & Terbukti.",
   subtitle:
-    "Dari nol jadi trader yang percaya diri ambil keputusan sendiri — tanpa harus nempel di chart seharian.",
+    "Dari nol jadi trader yang percaya diri ambil keputusan sendiri — dengan edukasi, mentor, dan komunitas yang mendukung.",
   ctaPrimary: "Mulai Belajar Sekarang",
   ctaSecondary: "Lihat Program →",
   stats: [
@@ -61,14 +61,14 @@ export const PROGRAMS = [
   {
     title: "Crypto Trader",
     desc: "Kuasai market crypto dari nol. Belajar analisa, strategi entry-exit, dan manajemen risiko khusus crypto.",
-    audience: "Cocok buat: yang mau fokus profit di market crypto.",
+    audience: "Cocok buat: yang mau fokus belajar di market crypto.",
     tag: "Populer",
     ctaText: "Lihat Harga & Benefit",
     pricingTab: 1, // index of "Crypto Trading" tab
   },
   {
     title: "Forex Trader",
-    desc: "Pelajari strategi trading forex yang proven. Dari reading chart sampai konsisten profit di pair mayor.",
+    desc: "Pelajari strategi trading forex yang proven. Dari reading chart sampai paham analisa di pair mayor.",
     audience: "Cocok buat: yang mau trading di market forex global.",
     tag: "Terlaris",
     ctaText: "Lihat Harga & Benefit",
@@ -144,7 +144,7 @@ export const ABOUT = {
 export const PRICING_SECTION = {
   badge: "Harga",
   headline: "Investasi di Skill yang",
-  headlineAccent: "Menghasilkan Seumur Hidup",
+  headlineAccent: "Bertahan Seumur Hidup",
 };
 
 export const PRICING_PRODUCTS = [
@@ -292,7 +292,7 @@ export const PRICING_PRODUCTS = [
 export const TESTIMONIALS_SECTION = {
   badge: "Testimoni",
   headline: "Kata Mereka yang Sudah",
-  headlineAccent: "Merasakan Hasilnya",
+  headlineAccent: "Bergabung",
 };
 
 // GANTI KE TESTIMONIAL ASLI dengan foto & nama lengkap
@@ -300,13 +300,13 @@ export const TESTIMONIALS = [
   {
     name: "Andi Raharjo",
     duration: "Member 6 bulan",
-    text: "Awalnya ga ngerti apa-apa soal trading. Setelah 3 bulan ikut Panen Trading, sekarang udah bisa konsisten profit 5-10% per bulan. Materi dan komunitasnya top banget!",
+    text: "Awalnya ga ngerti apa-apa soal trading. Setelah ikut Cuanterus, sekarang udah jauh lebih paham cara baca chart dan manage risiko. Materi dan komunitasnya top banget!",
     rating: 5,
   },
   {
     name: "Dewi Santika",
     duration: "Member 1 tahun",
-    text: "Sinyal tradingnya akurat banget. Gua yang kerja kantoran bisa tetap trading tanpa harus mantau chart seharian. Win rate sinyal-nya di atas 70%.",
+    text: "Sinyal tradingnya membantu banget buat belajar. Gua yang kerja kantoran bisa tetap belajar trading tanpa harus mantau chart seharian.",
     rating: 5,
   },
   {
@@ -318,7 +318,7 @@ export const TESTIMONIALS = [
   {
     name: "Rina Maharani",
     duration: "Member 8 bulan",
-    text: "Udah coba beberapa kursus trading lain, tapi Cuanterus yang paling praktikal. Dalam 2 bulan pertama udah bisa balik modal dari biaya kursus.",
+    text: "Udah coba beberapa kursus trading lain, tapi Cuanterus yang paling praktikal. Materinya langsung bisa dipahami dan diterapkan.",
     rating: 5,
   },
 ];
@@ -330,23 +330,35 @@ export const FAQS = [
     a: "Sangat cocok! Materi disusun dari nol, mulai dari dasar-dasar trading sampai strategi advanced. Kamu akan dibimbing step by step.",
   },
   {
+    q: "Apa bedanya Crypto Trader, Forex Trader, dan Cuantroopers?",
+    a: "Crypto Trader fokus ke edukasi dan sinyal di market crypto. Forex Trader fokus ke market forex. Cuantroopers adalah paket terlengkap yang mencakup keduanya plus akses live trading dan webinar bulanan.",
+  },
+  {
     q: "Bagaimana cara mengakses materi setelah mendaftar?",
-    a: "Setelah pembayaran dikonfirmasi, kamu akan langsung mendapat akses ke member area. Semua materi bisa diakses dari HP maupun laptop.",
+    a: "Setelah pembayaran dikonfirmasi, kamu akan langsung mendapat akses ke member area dan Discord. Semua materi bisa diakses dari HP maupun laptop.",
   },
   {
     q: "Apakah ada garansi profit?",
-    a: "Tidak ada yang bisa menjamin profit di trading. Yang kami berikan adalah edukasi, strategi, dan tools terbaik agar kamu bisa mengambil keputusan trading yang lebih baik.",
+    a: "Tidak. Cuanterus adalah platform edukasi, bukan layanan investasi. Kami tidak menjanjikan profit atau hasil tertentu. Yang kami berikan adalah edukasi, strategi, dan tools agar kamu bisa mengambil keputusan trading yang lebih baik.",
+  },
+  {
+    q: "Berapa lama akses materinya?",
+    a: "Akses materi mengikuti durasi paket yang kamu pilih (1, 3, 6, atau 12 bulan). Selama masa aktif, kamu bisa akses semua materi tanpa batas.",
   },
   {
     q: "Bisa bayar pakai apa saja?",
     a: "Kami menerima transfer bank, e-wallet (OVO, GoPay, Dana), dan kartu kredit/debit melalui Xendit payment gateway.",
   },
+  {
+    q: "Apakah bisa upgrade paket di tengah jalan?",
+    a: "Bisa! Kamu bisa upgrade ke paket yang lebih tinggi kapan saja. Hubungi tim kami melalui Discord untuk info lebih lanjut.",
+  },
 ];
 
 // ── Final CTA section ───────────────────────────
 export const FINAL_CTA = {
-  headline: "Siap Jadi Trader yang",
-  headlineAccent: "Profit di Segala Kondisi Market?",
-  desc: "Gabung sekarang bersama 5,000+ trader lainnya yang sudah membuktikan hasilnya bersama Cuanterus.",
-  cta: "Daftar & Mulai Profit",
+  headline: "Siap Belajar Trading",
+  headlineAccent: "dengan Cara yang Benar?",
+  desc: "Gabung sekarang bersama 5,000+ trader lainnya yang sudah belajar dan berkembang bersama Cuanterus.",
+  cta: "Mulai Belajar Sekarang",
 };

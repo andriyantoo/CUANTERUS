@@ -15,9 +15,9 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cuanterus — Platform Edukasi Trading #1 di Indonesia",
+  title: "Cuanterus — Platform Edukasi Trading di Indonesia",
   description:
-    "Belajar trading dari nol sampai profit konsisten. Kurikulum terstruktur, sinyal real-time, dan komunitas trader aktif. Bergabung sekarang!",
+    "Belajar trading dari nol dengan kurikulum terstruktur, sinyal real-time, dan komunitas trader aktif. Dipercaya 5,000+ trader Indonesia.",
   keywords: [
     "belajar trading",
     "edukasi trading",
@@ -26,21 +26,23 @@ export const metadata: Metadata = {
     "trading pemula",
     "cuanterus",
     "trading Indonesia",
+    "kursus crypto",
+    "kursus forex",
   ],
   openGraph: {
-    title: "Cuanterus — Platform Edukasi Trading #1 di Indonesia",
+    title: "Cuanterus — Platform Edukasi Trading di Indonesia",
     description:
-      "Belajar trading dari nol sampai profit konsisten. Kurikulum terstruktur, sinyal real-time, dan komunitas trader aktif.",
-    url: "https://cuanterus.io",
+      "Belajar trading dari nol dengan kurikulum terstruktur, sinyal real-time, dan komunitas trader aktif. Dipercaya 5,000+ trader Indonesia.",
+    url: "https://cuanterus.vercel.app",
     siteName: "Cuanterus",
     type: "website",
     locale: "id_ID",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cuanterus — Platform Edukasi Trading #1 di Indonesia",
+    title: "Cuanterus — Platform Edukasi Trading di Indonesia",
     description:
-      "Belajar trading dari nol sampai profit konsisten. Kurikulum terstruktur, sinyal real-time, dan komunitas trader aktif.",
+      "Belajar trading dari nol dengan kurikulum terstruktur, sinyal real-time, dan komunitas trader aktif. Dipercaya 5,000+ trader Indonesia.",
   },
   robots: { index: true, follow: true },
 };
