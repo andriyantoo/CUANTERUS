@@ -179,28 +179,26 @@ export const PRICING_PRODUCTS = [
       },
       {
         name: "6 Bulan",
-        originalPrice: "4.200.000",
-        price: "3.500.000",
+        originalPrice: "3.600.000",
+        price: "2.950.000",
         popular: true,
         features: [
           "Market Outlook",
           "Discord Access to Forex Signal",
           "Discord Voice Chat Access",
-          "Access on Crypto & Forex Live Trading",
           "Free Consultation",
         ],
         ctaLink: CTA_LINK,
       },
       {
         name: "12 Bulan",
-        originalPrice: "7.500.000",
-        price: "6.000.000",
+        originalPrice: "6.600.000",
+        price: "5.400.000",
         popular: false,
         features: [
           "Market Outlook",
           "Discord Access to Forex Signal",
           "Discord Voice Chat Access",
-          "Access on Crypto & Forex Live Trading",
           "Free Consultation",
         ],
         ctaLink: CTA_LINK,
@@ -273,8 +271,8 @@ export const PRICING_PRODUCTS = [
       },
       {
         name: "12 Bulan",
-        originalPrice: "12.000.000",
-        price: "9.500.000",
+        originalPrice: "13.000.000",
+        price: "10.500.000",
         popular: false,
         features: [
           "Market Outlook",
