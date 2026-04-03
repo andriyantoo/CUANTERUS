@@ -20,11 +20,11 @@ export const SOCIALS = {
 
 // ── Hero section ────────────────────────────────
 export const HERO = {
-  badge: "Trading Education Platform #1",
-  headline: "Strategi Profit Konsisten dari Trading",
-  headlineAccent: "Meskipun Market Sedang Merah",
+  badge: "Dipercaya 5,000+ Trader Indonesia",
+  headline: "Market Merah?",
+  headlineAccent: "Tetap Profit.",
   subtitle:
-    "Cuanterus bantu kamu belajar trading dari nol, dengan kurikulum terstruktur, sinyal real-time, dan komunitas trader yang aktif.",
+    "Dari nol jadi trader yang percaya diri ambil keputusan sendiri — tanpa harus nempel di chart seharian.",
   ctaPrimary: "Mulai Belajar Sekarang",
   ctaSecondary: "Lihat Program →",
   stats: [
@@ -61,6 +61,7 @@ export const PROGRAMS = [
   {
     title: "Smart Triggers",
     desc: "Sinyal trading otomatis langsung ke HP kamu. Cocok buat yang ga punya waktu mantau chart seharian.",
+    audience: "Cocok buat: yang udah ngerti basic tapi butuh sinyal akurat.",
     tag: "Populer",
     ctaText: "Lihat Detail",
     ctaLink: CTA_LINK,
@@ -68,7 +69,8 @@ export const PROGRAMS = [
   {
     title: "Panen Trading",
     desc: "Belajar strategi trading dari nol sampai bisa profit konsisten. Full video + mentoring.",
-    tag: "Best Seller",
+    audience: "Cocok buat: pemula yang mau belajar dari nol sampai mahir.",
+    tag: "Terlaris",
     ctaText: "Daftar Sekarang",
     ctaLink: CTA_LINK,
     highlighted: true,
@@ -76,6 +78,7 @@ export const PROGRAMS = [
   {
     title: "Komplet Trading",
     desc: "Paket lengkap: kursus + sinyal + komunitas + webinar. Semua yang kamu butuhkan dalam satu paket.",
+    audience: "Cocok buat: yang mau all-in dan serius jadi full-time trader.",
     tag: "Terlengkap",
     ctaText: "Lihat Detail",
     ctaLink: CTA_LINK,
@@ -118,7 +121,7 @@ export const COMMUNITY = {
   headline: "Komunitas Eksklusif",
   headlineAccent: "Khusus Member",
   desc: "Gabung dengan ribuan trader aktif. Diskusi market, sharing strategi, dan belajar bareng setiap hari di grup eksklusif Cuanterus.",
-  cta: "Gabung Komunitas",
+  cta: "Gabung Diskusi",
 };
 
 // ── Credibility / About section ─────────────────
@@ -139,9 +142,9 @@ export const ABOUT = {
 // ── Pricing section ─────────────────────────────
 // GANTI HARGA DI SINI
 export const PRICING_SECTION = {
-  badge: "Pricing",
-  headline: "Join dan",
-  headlineAccent: "Daftar Sekarang!",
+  badge: "Harga",
+  headline: "Investasi di Skill yang",
+  headlineAccent: "Menghasilkan Seumur Hidup",
 };
 
 export const PRICING_PLANS = [
@@ -166,7 +169,7 @@ export const PRICING_PLANS = [
     features: [
       "Semua fitur 1 Bulan",
       "Hemat 20%",
-      "Priority support",
+      "Prioritas support",
       "Bonus materi eksklusif",
     ],
     ctaLink: CTA_LINK,
@@ -180,7 +183,7 @@ export const PRICING_PLANS = [
       "Semua fitur 3 Bulan",
       "Hemat 50%",
       "1-on-1 mentoring",
-      "Lifetime community access",
+      "Akses komunitas selamanya",
     ],
     ctaLink: CTA_LINK,
   },
@@ -190,29 +193,34 @@ export const PRICING_PLANS = [
 // GANTI KE TESTIMONIAL ASLI
 export const TESTIMONIALS_SECTION = {
   badge: "Testimoni",
-  headline: "Dengar Apa Kata Mereka",
-  headlineAccent: "Setelah Bergabung",
+  headline: "Kata Mereka yang Sudah",
+  headlineAccent: "Merasakan Hasilnya",
 };
 
+// GANTI KE TESTIMONIAL ASLI dengan foto & nama lengkap
 export const TESTIMONIALS = [
   {
-    name: "Andi R.",
-    text: "Awalnya ga ngerti apa-apa soal trading. Setelah ikut program Cuanterus, sekarang udah bisa profit konsisten. Materi dan komunitasnya top banget!",
+    name: "Andi Raharjo",
+    duration: "Member 6 bulan",
+    text: "Awalnya ga ngerti apa-apa soal trading. Setelah 3 bulan ikut Panen Trading, sekarang udah bisa konsisten profit 5-10% per bulan. Materi dan komunitasnya top banget!",
     rating: 5,
   },
   {
-    name: "Dewi S.",
-    text: "Sinyal tradingnya akurat banget. Gua yang kerja kantoran bisa tetap trading tanpa harus mantau chart seharian. Recommended!",
+    name: "Dewi Santika",
+    duration: "Member 1 tahun",
+    text: "Sinyal tradingnya akurat banget. Gua yang kerja kantoran bisa tetap trading tanpa harus mantau chart seharian. Win rate sinyal-nya di atas 70%.",
     rating: 5,
   },
   {
-    name: "Budi W.",
-    text: "Webinar-nya informatif dan mentornya sabar banget jelasin. Komunitas juga aktif, jadi belajarnya ga sendirian.",
-    rating: 5,
+    name: "Budi Wicaksono",
+    duration: "Member 4 bulan",
+    text: "Webinar-nya informatif dan mentornya sabar banget jelasin. Komunitas juga aktif, jadi belajarnya ga sendirian. Sekarang udah berani open posisi sendiri.",
+    rating: 4,
   },
   {
-    name: "Rina M.",
-    text: "Udah coba beberapa kursus trading lain, tapi Cuanterus yang paling praktikal. Langsung bisa dipake buat trading beneran.",
+    name: "Rina Maharani",
+    duration: "Member 8 bulan",
+    text: "Udah coba beberapa kursus trading lain, tapi Cuanterus yang paling praktikal. Dalam 2 bulan pertama udah bisa balik modal dari biaya kursus.",
     rating: 5,
   },
 ];
@@ -239,8 +247,8 @@ export const FAQS = [
 
 // ── Final CTA section ───────────────────────────
 export const FINAL_CTA = {
-  headline: "Jadi Trader Profesional dan",
-  headlineAccent: "Raih Profit Konsisten",
-  desc: "Gabung sekarang bersama ribuan trader lainnya yang sudah membuktikan hasilnya bersama Cuanterus.",
-  cta: "Daftar Sekarang",
+  headline: "Siap Jadi Trader yang",
+  headlineAccent: "Profit di Segala Kondisi Market?",
+  desc: "Gabung sekarang bersama 5,000+ trader lainnya yang sudah membuktikan hasilnya bersama Cuanterus.",
+  cta: "Daftar & Mulai Profit",
 };

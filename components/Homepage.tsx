@@ -446,6 +446,45 @@ export default function Homepage() {
         </div>
       </Section>
 
+      {/* ═══ ABOUT / CREDIBILITY ═══ */}
+      <Section className="py-16 md:py-24 relative overflow-hidden" style={{ background: DARK_CARD }}>
+        <div
+          className="absolute right-0 top-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-10 pointer-events-none"
+          style={{ background: `radial-gradient(circle, ${LIME} 0%, transparent 70%)` }}
+        />
+        <FadeIn>
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 relative z-10">
+            <div className="flex-1">
+              <Badge>{ABOUT.badge}</Badge>
+              <h2 className="text-2xl md:text-3xl font-bold mt-4 mb-4">
+                {ABOUT.headline} <span style={{ color: LIME }}>{ABOUT.headlineAccent}</span> {ABOUT.headlineSuffix}
+              </h2>
+              <p className="text-sm md:text-base leading-relaxed mb-4" style={{ color: TEXT_SEC }}>
+                {ABOUT.bio}
+              </p>
+              <p className="text-sm md:text-base leading-relaxed mb-6" style={{ color: TEXT_SEC }}>
+                {ABOUT.bio2}
+              </p>
+              <div className="flex gap-6">
+                {ABOUT.stats.map((s, i) => (
+                  <div key={i} className="text-center">
+                    <div className="text-2xl md:text-3xl">
+                      <Counter end={s.value} suffix={s.suffix} />
+                    </div>
+                    <div className="text-xs mt-1" style={{ color: TEXT_SEC }}>
+                      {s.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex-1 w-full max-w-sm">
+              <Placeholder label="📸 Foto Andriyanto" className="float-anim" />
+            </div>
+          </div>
+        </FadeIn>
+      </Section>
+
       {/* ═══ PROGRAMS ═══ */}
       <Section id="program" className="py-16 md:py-24" style={{ background: DARK_CARD }}>
         <FadeIn>
@@ -470,9 +509,14 @@ export default function Homepage() {
                   {p.tag}
                 </span>
                 <h3 className="text-xl font-bold mb-3">{p.title}</h3>
-                <p className="text-sm leading-relaxed flex-1" style={{ color: TEXT_SEC }}>
+                <p className="text-sm leading-relaxed" style={{ color: TEXT_SEC }}>
                   {p.desc}
                 </p>
+                {p.audience && (
+                  <p className="text-xs mt-2 font-medium flex-1" style={{ color: LIME, opacity: 0.8 }}>
+                    {p.audience}
+                  </p>
+                )}
                 <div className="mt-6">
                   <CTAButton href={p.ctaLink} small secondary={!p.highlighted}>
                     {p.ctaText}
@@ -548,45 +592,6 @@ export default function Homepage() {
         </FadeIn>
       </Section>
 
-      {/* ═══ ABOUT / CREDIBILITY ═══ */}
-      <Section className="py-16 md:py-24 relative overflow-hidden">
-        <div
-          className="absolute right-0 top-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-10 pointer-events-none"
-          style={{ background: `radial-gradient(circle, ${LIME} 0%, transparent 70%)` }}
-        />
-        <FadeIn>
-          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16 relative z-10">
-            <div className="flex-1">
-              <Badge>{ABOUT.badge}</Badge>
-              <h2 className="text-2xl md:text-3xl font-bold mt-4 mb-4">
-                {ABOUT.headline} <span style={{ color: LIME }}>{ABOUT.headlineAccent}</span> {ABOUT.headlineSuffix}
-              </h2>
-              <p className="text-sm md:text-base leading-relaxed mb-4" style={{ color: TEXT_SEC }}>
-                {ABOUT.bio}
-              </p>
-              <p className="text-sm md:text-base leading-relaxed mb-6" style={{ color: TEXT_SEC }}>
-                {ABOUT.bio2}
-              </p>
-              <div className="flex gap-6">
-                {ABOUT.stats.map((s, i) => (
-                  <div key={i} className="text-center">
-                    <div className="text-2xl md:text-3xl">
-                      <Counter end={s.value} suffix={s.suffix} />
-                    </div>
-                    <div className="text-xs mt-1" style={{ color: TEXT_SEC }}>
-                      {s.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex-1 w-full max-w-sm">
-              <Placeholder label="📸 Foto Andriyanto" className="float-anim" />
-            </div>
-          </div>
-        </FadeIn>
-      </Section>
-
       <div className="glow-line" />
 
       {/* ═══ PRICING ═══ */}
@@ -619,7 +624,7 @@ export default function Homepage() {
                     className="absolute -top-3 left-1/2 -translate-x-1/2 text-xs font-bold uppercase px-4 py-1 rounded-full"
                     style={{ background: LIME, color: DARK_BG }}
                   >
-                    Most Popular
+                    Paling Populer
                   </div>
                 )}
                 <h3 className="text-lg font-bold mb-2">{plan.name}</h3>
@@ -686,7 +691,12 @@ export default function Homepage() {
                   >
                     {t.name[0]}
                   </div>
-                  <span className="font-semibold text-sm">{t.name}</span>
+                  <div>
+                    <span className="font-semibold text-sm">{t.name}</span>
+                    {t.duration && (
+                      <div className="text-xs" style={{ color: TEXT_SEC }}>{t.duration}</div>
+                    )}
+                  </div>
                 </div>
               </div>
             </FadeIn>
@@ -701,7 +711,7 @@ export default function Homepage() {
         <FadeIn>
           <div className="text-center mb-12">
             <Badge>FAQ</Badge>
-            <h2 className="text-2xl md:text-3xl font-bold mt-4">Frequently Asked Questions</h2>
+            <h2 className="text-2xl md:text-3xl font-bold mt-4">Pertanyaan yang Sering Ditanyakan</h2>
           </div>
         </FadeIn>
         <div className="max-w-2xl mx-auto">
@@ -755,7 +765,7 @@ export default function Homepage() {
             </div>
             <div>
               <h4 className="font-semibold text-sm mb-4" style={{ color: LIME }}>
-                Quick Links
+                Menu
               </h4>
               <div className="space-y-2">
                 {navLinks.map((item) => (
@@ -772,7 +782,7 @@ export default function Homepage() {
             </div>
             <div>
               <h4 className="font-semibold text-sm mb-4" style={{ color: LIME }}>
-                Connect
+                Sosial Media
               </h4>
               <div className="space-y-2">
                 {[
