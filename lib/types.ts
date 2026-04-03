@@ -26,6 +26,9 @@ export interface Profile {
   phone: string | null;
   avatar_url: string | null;
   role: UserRole;
+  discord_id: string | null;
+  discord_username: string | null;
+  discord_linked_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -166,6 +169,20 @@ export interface MarketInsight {
   created_at: string;
   updated_at: string;
   product?: Product;
+}
+
+// Notification types
+export type NotificationType = "info" | "success" | "warning" | "error";
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  title: string;
+  body: string;
+  type: NotificationType;
+  link: string | null;
+  is_read: boolean;
+  created_at: string;
 }
 
 // Forum types

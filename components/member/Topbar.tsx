@@ -2,6 +2,7 @@
 
 import { Menu } from "lucide-react";
 import { getInitials } from "@/lib/utils";
+import { NotificationBell } from "@/components/member/NotificationBell";
 import type { Profile } from "@/lib/types";
 
 export function Topbar({
@@ -23,6 +24,7 @@ export function Topbar({
       <div className="hidden md:block" />
 
       <div className="flex items-center gap-3">
+        {profile?.id && <NotificationBell userId={profile.id} />}
         <div className="text-right hidden sm:block">
           <p className="text-sm font-medium text-[#F0F0F5]">
             {profile?.full_name || "Member"}

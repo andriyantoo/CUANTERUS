@@ -7,8 +7,10 @@ import { Card, CardTitle } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { User, Lock, Save, Mail, Phone } from "lucide-react";
+import { User, Lock, Save, Mail, Phone, MessageCircle, CheckCircle, LinkIcon } from "lucide-react";
 import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
+import { Badge } from "@/components/ui/Badge";
 
 export default function ProfilePage() {
   const { user, profile, loading } = useUser();
@@ -148,6 +150,45 @@ export default function ProfilePage() {
             </Button>
           </div>
         </div>
+      </Card>
+
+      {/* Discord Integration */}
+      <Card>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "#5865F2" + "20" }}>
+            <MessageCircle size={20} style={{ color: "#5865F2" }} />
+          </div>
+          <div className="flex-1">
+            <CardTitle>Discord</CardTitle>
+            <p className="text-xs text-[#8B949E]">
+              Hubungkan akun Discord untuk auto-assign role sesuai membership.
+            </p>
+          </div>
+        </div>
+
+        {profile?.discord_id ? (
+          <div className="flex items-center justify-between p-4 rounded-xl bg-[#0A0A0F] border border-[#222229]">
+            <div className="flex items-center gap-3">
+              <CheckCircle size={18} className="text-[#96FC03]" />
+              <div>
+                <p className="text-sm font-medium text-[#F0F0F5]">
+                  {profile.discord_username || "Discord Terhubung"}
+                </p>
+                <p className="text-xs text-[#8B949E]">
+                  ID: {profile.discord_id}
+                </p>
+              </div>
+            </div>
+            <Badge variant="lime">Terhubung</Badge>
+          </div>
+        ) : (
+          <a href="/api/discord/link">
+            <Button variant="secondary" size="sm">
+              <LinkIcon size={14} className="mr-1.5" />
+              Hubungkan Discord
+            </Button>
+          </a>
+        )}
       </Card>
 
       {/* Change Password */}

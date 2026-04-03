@@ -11,6 +11,7 @@ import {
   BarChart3,
   FileText,
   MessageSquare,
+  MessageCircle,
   CreditCard,
   ArrowLeft,
   X,
@@ -25,6 +26,7 @@ const navItems = [
   { href: "/admin/market-outlook", label: "Market Outlook", icon: BarChart3 },
   { href: "/admin/market-insight", label: "Market Insight", icon: FileText },
   { href: "/admin/forum", label: "Forum", icon: MessageSquare },
+  { href: "/admin/discord", label: "Discord", icon: MessageCircle },
   { href: "/admin/payments", label: "Payments", icon: CreditCard },
 ];
 

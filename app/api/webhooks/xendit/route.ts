@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { verifyWebhookToken } from "@/lib/xendit";
+import { syncRoles } from "@/lib/discord";
 import { addMonths } from "date-fns";
 
 export async function POST(request: Request) {
@@ -72,6 +73,41 @@ export async function POST(request: Request) {
             .update({ subscription_id: subscription.id })
             .eq("id", payment.id);
         }
+
+        // Auto-assign Discord role
+        const { data: profile } = await admin
+          .from("profiles")
+          .select("discord_id")
+          .eq("id", payment.user_id)
+          .single();
+
+        if (profile?.discord_id) {
+          const { data: allActiveSubs } = await admin
+            .from("subscriptions")
+            .select("product_id")
+            .eq("user_id", payment.user_id)
+            .eq("status", "active")
+            .gt("expires_at", new Date().toISOString());
+
+          const activeProductIds = (allActiveSubs ?? []).map((s) => s.product_id);
+
+          const { data: mappings } = await admin
+            .from("discord_role_mappings")
+            .select("product_id, discord_role_id");
+
+          if (mappings) {
+            await syncRoles(profile.discord_id, activeProductIds, mappings);
+          }
+        }
+
+        // Send notification
+        await admin.from("notifications").insert({
+          user_id: payment.user_id,
+          title: "Pembayaran Berhasil!",
+          body: `Paket ${plan.product.name} - ${plan.name} sudah aktif. Selamat belajar!`,
+          type: "success",
+          link: "/dashboard",
+        });
       }
     } else if (status === "EXPIRED") {
       await admin
