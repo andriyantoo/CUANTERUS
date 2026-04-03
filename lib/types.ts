@@ -150,3 +150,20 @@ export interface Signal {
   updated_at: string;
   product?: Product;
 }
+
+export type InsightCategory = "daily" | "weekly" | "monthly" | "special";
+
+export interface MarketInsight {
+  id: string;
+  product_id: string;
+  title: string;
+  description: string | null;
+  file_url: string;
+  file_name: string;
+  category: InsightCategory;
+  is_published: boolean;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+  product?: Product;
+}

@@ -8,6 +8,7 @@ import {
   BookOpen,
   TrendingUp,
   BarChart3,
+  FileText,
   User,
   CreditCard,
   LogOut,
@@ -21,6 +22,7 @@ const navItems = [
   { href: "/courses", label: "Kursus", icon: BookOpen },
   { href: "/signals", label: "Sinyal", icon: TrendingUp },
   { href: "/market-outlook", label: "Market Outlook", icon: BarChart3 },
+  { href: "/market-insight", label: "Market Insight", icon: FileText },
   { href: "/profile", label: "Profil", icon: User },
   { href: "/billing", label: "Billing", icon: CreditCard },
 ];
