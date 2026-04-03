@@ -220,7 +220,7 @@ export const PRICING_PRODUCTS = [
           "Access on Crypto & Forex Live Trading",
           "Free Consultation",
         ],
-        ctaLink: CTA_LINK,
+        ctaLink: "https://cuanterus.in/member/signup/crypto6month",
       },
       {
         name: "12 Bulan",
@@ -234,7 +234,7 @@ export const PRICING_PRODUCTS = [
           "Access on Crypto & Forex Live Trading",
           "Free Consultation",
         ],
-        ctaLink: CTA_LINK,
+        ctaLink: "https://cuanterus.in/member/signup/crypto12month",
       },
     ],
   },
