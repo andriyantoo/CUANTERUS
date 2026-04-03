@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-x: hidden;
+  background: #0a0a0f;
+  color: #f0f0f5;
+}
+
+::selection {
+  background: rgba(150, 252, 3, 0.25);
+  color: #f0f0f5;
+}
+
+/* Glow divider line */
+.glow-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(150, 252, 3, 0.4), transparent);
+}
+
+/* Glass card */
+.glass-card {
+  background: linear-gradient(135deg, rgba(19, 19, 24, 0.8), rgba(26, 26, 34, 0.6));
+  backdrop-filter: blur(12px);
+  border: 1px solid #222229;
+  border-radius: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(150, 252, 3, 0.2);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #f0f0f5 0%, #96fc03 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Lime glow shadow */
+.lime-glow {
+  box-shadow: 0 0 60px rgba(150, 252, 3, 0.08), 0 0 120px rgba(150, 252, 3, 0.04);
+}
+
+/* Float animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.float-anim {
+  animation: float 4s ease-in-out infinite;
+}
