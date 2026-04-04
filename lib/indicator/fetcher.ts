@@ -13,6 +13,7 @@ export interface Candle {
 }
 
 const BINANCE_API = "https://api.binance.com/api/v3";
+const BINANCE_API_FALLBACK = "https://data-api.binance.vision/api/v3";
 
 const TF_MAP: Record<string, string> = {
   "1m": "1m", "3m": "3m", "5m": "5m", "15m": "15m", "30m": "30m",
@@ -27,10 +28,16 @@ export async function fetchCandles(
 ): Promise<Candle[]> {
   const interval = TF_MAP[timeframe] || "1h";
 
-  const res = await fetch(
-    `${BINANCE_API}/klines?symbol=${symbol.toUpperCase()}&interval=${interval}&limit=${limit}`,
-    { next: { revalidate: 60 } } // cache 60s
+  // Try primary API first, fallback to data-api (no geo-restriction)
+  let res = await fetch(
+    `${BINANCE_API}/klines?symbol=${symbol.toUpperCase()}&interval=${interval}&limit=${limit}`
   );
+
+  if (!res.ok) {
+    res = await fetch(
+      `${BINANCE_API_FALLBACK}/klines?symbol=${symbol.toUpperCase()}&interval=${interval}&limit=${limit}`
+    );
+  }
 
   if (!res.ok) throw new Error(`Binance API error: ${res.status}`);
 
