@@ -1,16 +1,11 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { fetchCandles, getHTFTimeframe } from "@/lib/indicator/fetcher";
 import { calculateIndicator } from "@/lib/indicator/engine";
 
 export const dynamic = "force-dynamic";
 
-/**
- * GET /api/indicator?symbol=BTCUSDT&timeframe=1h
- *
- * Returns plot points ONLY — zero calculation logic exposed.
- * Requires authenticated user with active subscription.
- */
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -19,21 +14,27 @@ export async function GET(request: Request) {
 
     // Auth check
     const supabase = await createClient();
-    const { data: { session } } = await supabase.auth.getSession();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-    if (!session?.user) {
+    if (authError || !user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Check active subscription
-    const { data: sub } = await supabase
+    // Check active subscription using admin client (bypasses RLS)
+    const admin = createAdminClient();
+    const { data: sub, error: subError } = await admin
       .from("subscriptions")
       .select("id")
-      .eq("user_id", session.user.id)
+      .eq("user_id", user.id)
       .eq("status", "active")
       .gt("expires_at", new Date().toISOString())
       .limit(1)
       .maybeSingle();
+
+    if (subError) {
+      console.error("Subscription check error:", subError);
+      return NextResponse.json({ error: "Subscription check failed" }, { status: 500 });
+    }
 
     if (!sub) {
       return NextResponse.json({ error: "No active subscription" }, { status: 403 });
@@ -48,7 +49,6 @@ export async function GET(request: Request) {
     // Run indicator engine (ALL logic server-side)
     const plots = calculateIndicator(candles, htfCandles);
 
-    // Return candles (for chart rendering) + plots (overlay data)
     return NextResponse.json({
       candles: candles.map(c => ({
         time: c.time,
@@ -59,10 +59,10 @@ export async function GET(request: Request) {
       })),
       plots,
     });
-  } catch (error) {
-    console.error("Indicator API error:", error);
+  } catch (error: any) {
+    console.error("Indicator API error:", error?.message || error);
     return NextResponse.json(
-      { error: "Failed to calculate indicator" },
+      { error: error?.message || "Failed to calculate indicator" },
       { status: 500 }
     );
   }
