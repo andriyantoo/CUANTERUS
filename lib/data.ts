@@ -113,6 +113,7 @@ export const MASTERCLASS_FEATURES = [
     icon: "Video",
     title: "MOONBAG PRIVATE Live",
     desc: "Sesi live trading setiap weekdays, eksklusif untuk member Crypto Trader & Cuantroopers. Analisa market real-time bareng mentor.",
+    image: "/images/private live.png",
   },
 ];
 
