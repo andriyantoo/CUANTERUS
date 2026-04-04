@@ -834,6 +834,33 @@ export default function Homepage() {
         </div>
       </Section>
 
+      {/* ═══ QUOTE ═══ */}
+      <Section className="py-16 md:py-24" style={{ background: DARK_CARD }}>
+        <FadeIn>
+          <div className="max-w-3xl mx-auto text-center">
+            <div
+              className="relative px-8 py-12 md:px-16 md:py-16 rounded-2xl"
+              style={{ border: `1px solid ${BORDER}`, background: `linear-gradient(135deg, ${DARK_BG} 0%, ${DARK_CARD} 100%)` }}
+            >
+              <div
+                className="absolute top-4 left-6 text-6xl md:text-8xl font-serif leading-none opacity-20"
+                style={{ color: LIME }}
+              >
+                &ldquo;
+              </div>
+              <p className="text-xl md:text-2xl lg:text-3xl font-bold leading-snug mb-6" style={{ color: TEXT }}>
+                If you don&apos;t find a way to{" "}
+                <span style={{ color: LIME }}>make money while you sleep</span>,
+                you will work until you die.
+              </p>
+              <p className="text-base md:text-lg font-medium" style={{ color: TEXT_SEC }}>
+                — Warren Buffett
+              </p>
+            </div>
+          </div>
+        </FadeIn>
+      </Section>
+
       {/* ═══ FINAL CTA ═══ */}
       <Section className="py-16 md:py-24 text-center relative overflow-hidden">
         <div
