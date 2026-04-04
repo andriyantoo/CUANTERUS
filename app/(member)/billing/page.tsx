@@ -1,27 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useUser } from "@/hooks/useUser";
-import { useSubscription } from "@/hooks/useSubscription";
 import { Card, CardTitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { PRODUCT_NAMES, PRODUCT_COLORS } from "@/lib/constants";
+import { PRODUCT_NAMES } from "@/lib/constants";
 import { formatDate, formatCurrency, daysUntil } from "@/lib/utils";
-import type { Payment } from "@/lib/types";
+import type { Payment, Plan, Product } from "@/lib/types";
 import {
   CreditCard,
   Clock,
   AlertTriangle,
-  ExternalLink,
   Receipt,
   CheckCircle2,
   XCircle,
   Loader2,
+  ShoppingCart,
+  Check,
 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import { toast } from "sonner";
 
 const PAYMENT_STATUS_CONFIG: Record<
   string,
@@ -46,40 +48,94 @@ function PaymentStatusIcon({ status }: { status: string }) {
   }
 }
 
-export default function BillingPage() {
-  const { user } = useUser();
-  const { subscriptions, activeSubscription, loading: subLoading } = useSubscription(user?.id);
+interface PlanWithProduct extends Plan {
+  product: Product;
+}
+
+function BillingContent() {
+  const { user, subscription: activeSubscription } = useUser();
+  const searchParams = useSearchParams();
 
   const [payments, setPayments] = useState<Payment[]>([]);
+  const [plans, setPlans] = useState<PlanWithProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [purchasing, setPurchasing] = useState<string | null>(null);
+  const [showPlans, setShowPlans] = useState(false);
 
   const daysLeft = activeSubscription ? daysUntil(activeSubscription.expires_at) : 0;
   const isExpiringSoon = daysLeft > 0 && daysLeft <= 14;
 
+  // Show success/failed toast from redirect
   useEffect(() => {
-    async function fetchPayments() {
-      if (!user) {
-        setLoading(false);
+    const payment = searchParams.get("payment");
+    if (payment === "success") {
+      toast.success("Pembayaran berhasil! Subscription kamu sudah aktif.");
+    } else if (payment === "failed") {
+      toast.error("Pembayaran gagal atau dibatalkan.");
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!user) { setLoading(false); return; }
+
+      const supabase = createClient();
+      const [paymentsRes, plansRes] = await Promise.all([
+        supabase
+          .from("payments")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("plans")
+          .select("*, product:products(*)")
+          .eq("is_active", true)
+          .order("price_idr"),
+      ]);
+
+      setPayments((paymentsRes.data ?? []) as Payment[]);
+      setPlans((plansRes.data ?? []) as PlanWithProduct[]);
+      setLoading(false);
+    }
+    fetchData();
+  }, [user]);
+
+  async function handlePurchase(planId: string) {
+    setPurchasing(planId);
+    try {
+      const res = await fetch("/api/payments/create-invoice", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan_id: planId }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(data.error || "Gagal membuat pembayaran");
+        setPurchasing(null);
         return;
       }
 
-      const supabase = createClient();
-      const { data } = await supabase
-        .from("payments")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
-
-      setPayments((data ?? []) as Payment[]);
-      setLoading(false);
+      // Redirect to Xendit payment page
+      window.location.href = data.invoice_url;
+    } catch {
+      toast.error("Terjadi kesalahan. Coba lagi.");
+      setPurchasing(null);
     }
+  }
 
-    fetchPayments();
-  }, [user]);
+  // Group plans by product
+  const plansByProduct: Record<string, PlanWithProduct[]> = {};
+  plans.forEach((plan) => {
+    const key = plan.product?.slug ?? "other";
+    if (!plansByProduct[key]) plansByProduct[key] = [];
+    plansByProduct[key].push(plan);
+  });
 
-  if (subLoading || loading) {
+  if (loading) {
     return (
-      <div className="space-y-6 max-w-3xl">
+      <div className="space-y-6 max-w-4xl">
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-36 w-full" />
         <Skeleton className="h-64 w-full" />
@@ -88,65 +144,36 @@ export default function BillingPage() {
   }
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-6 max-w-4xl">
       <div>
         <h1 className="text-2xl font-bold text-[#F0F0F5]">Langganan & Billing</h1>
         <p className="text-sm text-[#8B949E] mt-1">
-          Kelola paket langganan dan riwayat pembayaranmu.
+          Kelola paket langganan dan pembayaran.
         </p>
       </div>
 
       {/* Current Subscription */}
       {activeSubscription ? (
-        <Card
-          className={
-            isExpiringSoon
-              ? "border-amber-500/20 bg-amber-500/5"
-              : "border-[#96FC03]/20 bg-[#96FC03]/5"
-          }
-        >
+        <Card className={isExpiringSoon ? "border-amber-500/20 bg-amber-500/5" : "border-[#96FC03]/20 bg-[#96FC03]/5"}>
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-xl bg-[#96FC03]/10 flex items-center justify-center text-[#96FC03]">
               <CreditCard size={20} />
             </div>
             <div>
               <CardTitle>Paket Aktif</CardTitle>
-              <p className="text-xs text-[#8B949E]">
-                Langganan kamu saat ini
-              </p>
+              <p className="text-xs text-[#8B949E]">Langganan kamu saat ini</p>
             </div>
           </div>
-
           <div className="space-y-3">
             <div className="flex items-center gap-2 flex-wrap">
               <Badge variant="lime">Aktif</Badge>
-              {(() => {
-                const slug = activeSubscription.product?.slug ?? "";
-                const color = PRODUCT_COLORS[slug] ?? "#96FC03";
-                return (
-                  <Badge
-                    className="text-[10px]"
-                    style={{
-                      background: `${color}15`,
-                      color,
-                      borderColor: `${color}40`,
-                    } as React.CSSProperties}
-                  >
-                    {PRODUCT_NAMES[slug] ?? "Plan"}
-                  </Badge>
-                );
-              })()}
-              {activeSubscription.plan?.name && (
-                <Badge variant="gray">{activeSubscription.plan.name}</Badge>
-              )}
+              <Badge variant="gray">{PRODUCT_NAMES[activeSubscription.product?.slug ?? ""] ?? "Plan"}</Badge>
+              {activeSubscription.plan?.name && <Badge variant="gray">{activeSubscription.plan.name}</Badge>}
             </div>
-
             <div className="grid sm:grid-cols-2 gap-3 text-sm">
               <div>
                 <p className="text-[#8B949E] text-xs">Mulai</p>
-                <p className="text-[#F0F0F5] font-medium">
-                  {formatDate(activeSubscription.starts_at)}
-                </p>
+                <p className="text-[#F0F0F5] font-medium">{formatDate(activeSubscription.starts_at)}</p>
               </div>
               <div>
                 <p className="text-[#8B949E] text-xs">Berakhir</p>
@@ -154,21 +181,17 @@ export default function BillingPage() {
                   {formatDate(activeSubscription.expires_at)}
                   {isExpiringSoon && (
                     <span className="text-amber-400 text-xs flex items-center gap-1">
-                      <AlertTriangle size={12} />
-                      {daysLeft} hari lagi
+                      <AlertTriangle size={12} />{daysLeft} hari lagi
                     </span>
                   )}
                 </p>
               </div>
             </div>
-
             <div className="pt-2">
-              <Link href="/#pricing">
-                <Button size="sm" variant={isExpiringSoon ? "primary" : "secondary"}>
-                  <ExternalLink size={16} className="mr-1.5" />
-                  Perpanjang Langganan
-                </Button>
-              </Link>
+              <Button size="sm" variant={isExpiringSoon ? "primary" : "secondary"} onClick={() => setShowPlans(!showPlans)}>
+                <ShoppingCart size={16} className="mr-1.5" />
+                {isExpiringSoon ? "Perpanjang Sekarang" : "Perpanjang / Upgrade"}
+              </Button>
             </div>
           </div>
         </Card>
@@ -180,64 +203,70 @@ export default function BillingPage() {
                 <AlertTriangle size={16} />
                 Belum ada paket aktif
               </p>
-              <p className="text-sm text-[#8B949E] mt-1">
-                Pilih paket untuk mulai mengakses semua fitur premium.
-              </p>
+              <p className="text-sm text-[#8B949E] mt-1">Pilih paket untuk mulai mengakses semua fitur.</p>
             </div>
-            <Link href="/#pricing">
-              <Button size="sm">
-                <ExternalLink size={16} className="mr-1.5" />
-                Pilih Paket
-              </Button>
-            </Link>
+            <Button size="sm" onClick={() => setShowPlans(!showPlans)}>
+              <ShoppingCart size={16} className="mr-1.5" />
+              Pilih Paket
+            </Button>
           </div>
         </Card>
       )}
 
-      {/* All Subscriptions Summary */}
-      {subscriptions.length > 1 && (
-        <Card>
-          <CardTitle className="mb-4">Riwayat Langganan</CardTitle>
-          <div className="space-y-3">
-            {subscriptions.map((sub) => {
-              const slug = sub.product?.slug ?? "";
-              const color = PRODUCT_COLORS[slug] ?? "#96FC03";
-              const isActive =
-                sub.status === "active" && new Date(sub.expires_at) > new Date();
+      {/* Plan Selection (Checkout) */}
+      {(showPlans || !activeSubscription) && (
+        <div className="space-y-6">
+          <h2 className="text-lg font-bold text-[#F0F0F5]">Pilih Paket</h2>
 
-              return (
-                <div
-                  key={sub.id}
-                  className="flex items-center justify-between gap-3 py-2.5 border-b border-[#222229] last:border-0"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Badge
-                      className="text-[10px]"
-                      style={{
-                        background: `${color}15`,
-                        color,
-                        borderColor: `${color}40`,
-                      } as React.CSSProperties}
+          {Object.entries(plansByProduct).map(([slug, productPlans]) => (
+            <div key={slug}>
+              <h3 className="text-sm font-semibold text-[#8B949E] uppercase tracking-wider mb-3">
+                {PRODUCT_NAMES[slug] ?? slug}
+              </h3>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {productPlans.map((plan) => {
+                  const isCurrentPlan = activeSubscription?.plan_id === plan.id;
+                  return (
+                    <Card
+                      key={plan.id}
+                      className={`relative ${isCurrentPlan ? "border-[#96FC03]/30" : ""}`}
                     >
-                      {PRODUCT_NAMES[slug] ?? slug}
-                    </Badge>
-                    <span className="text-sm text-[#F0F0F5]">
-                      {sub.plan?.name ?? "-"}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="text-[#8B949E]">
-                      {formatDate(sub.starts_at)} - {formatDate(sub.expires_at)}
-                    </span>
-                    <Badge variant={isActive ? "lime" : "gray"}>
-                      {isActive ? "Aktif" : sub.status === "cancelled" ? "Dibatalkan" : "Berakhir"}
-                    </Badge>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </Card>
+                      {isCurrentPlan && (
+                        <div className="absolute -top-2.5 left-4 text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-[#96FC03] text-[#0A0A0F]">
+                          Paket Saat Ini
+                        </div>
+                      )}
+                      <h4 className="font-bold text-[#F0F0F5] mb-1">{plan.name}</h4>
+                      <div className="flex items-baseline gap-1 mb-3">
+                        {plan.original_price_idr && (
+                          <span className="text-xs line-through text-red-400">
+                            Rp {formatCurrency(plan.original_price_idr)}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-baseline gap-1 mb-4">
+                        <span className="text-xs text-[#8B949E]">Rp</span>
+                        <span className="text-2xl font-extrabold font-mono text-[#F0F0F5]">
+                          {formatCurrency(plan.price_idr)}
+                        </span>
+                      </div>
+                      <Button
+                        className="w-full"
+                        size="sm"
+                        variant={isCurrentPlan ? "secondary" : "primary"}
+                        loading={purchasing === plan.id}
+                        disabled={!!purchasing}
+                        onClick={() => handlePurchase(plan.id)}
+                      >
+                        {isCurrentPlan ? "Perpanjang" : "Beli Sekarang"}
+                      </Button>
+                    </Card>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
       )}
 
       {/* Payment History */}
@@ -259,46 +288,24 @@ export default function BillingPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[#222229]">
-                  <th className="text-left py-3 px-2 text-xs font-semibold text-[#8B949E] uppercase tracking-wide">
-                    Tanggal
-                  </th>
-                  <th className="text-left py-3 px-2 text-xs font-semibold text-[#8B949E] uppercase tracking-wide">
-                    Jumlah
-                  </th>
-                  <th className="text-left py-3 px-2 text-xs font-semibold text-[#8B949E] uppercase tracking-wide">
-                    Metode
-                  </th>
-                  <th className="text-left py-3 px-2 text-xs font-semibold text-[#8B949E] uppercase tracking-wide">
-                    Status
-                  </th>
+                  <th className="text-left py-3 px-2 text-xs font-semibold text-[#8B949E]">Tanggal</th>
+                  <th className="text-left py-3 px-2 text-xs font-semibold text-[#8B949E]">Jumlah</th>
+                  <th className="text-left py-3 px-2 text-xs font-semibold text-[#8B949E]">Metode</th>
+                  <th className="text-left py-3 px-2 text-xs font-semibold text-[#8B949E]">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {payments.map((payment) => {
-                  const config = PAYMENT_STATUS_CONFIG[payment.status] ?? {
-                    label: payment.status,
-                    variant: "gray" as const,
-                  };
+                  const config = PAYMENT_STATUS_CONFIG[payment.status] ?? { label: payment.status, variant: "gray" as const };
                   return (
-                    <tr
-                      key={payment.id}
-                      className="border-b border-[#222229]/50 last:border-0"
-                    >
-                      <td className="py-3 px-2 text-[#F0F0F5]">
-                        {formatDate(payment.created_at)}
-                      </td>
-                      <td className="py-3 px-2 text-[#F0F0F5] font-mono">
-                        Rp {formatCurrency(payment.amount_idr)}
-                      </td>
-                      <td className="py-3 px-2 text-[#8B949E]">
-                        {payment.payment_method ?? "-"}
-                      </td>
+                    <tr key={payment.id} className="border-b border-[#222229]/50 last:border-0">
+                      <td className="py-3 px-2 text-[#F0F0F5]">{formatDate(payment.created_at)}</td>
+                      <td className="py-3 px-2 text-[#F0F0F5] font-mono">Rp {formatCurrency(payment.amount_idr)}</td>
+                      <td className="py-3 px-2 text-[#8B949E]">{payment.payment_method ?? "-"}</td>
                       <td className="py-3 px-2">
                         <div className="flex items-center gap-1.5">
                           <PaymentStatusIcon status={payment.status} />
-                          <Badge variant={config.variant}>
-                            {config.label}
-                          </Badge>
+                          <Badge variant={config.variant}>{config.label}</Badge>
                         </div>
                       </td>
                     </tr>
@@ -310,5 +317,18 @@ export default function BillingPage() {
         )}
       </Card>
     </div>
+  );
+}
+
+export default function BillingPage() {
+  return (
+    <Suspense fallback={
+      <div className="space-y-6 max-w-4xl">
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-36 w-full" />
+      </div>
+    }>
+      <BillingContent />
+    </Suspense>
   );
 }
