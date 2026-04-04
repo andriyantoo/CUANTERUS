@@ -41,6 +41,11 @@ export const metadata: Metadata = {
     siteName: "Cuanterus",
     type: "website",
     locale: "id_ID",
+    images: [{
+      url: "https://cuanterus.vercel.app/images/social sharing logo.png",
+      width: 1200,
+      height: 630,
+    }],
   },
   twitter: {
     card: "summary_large_image",

@@ -43,7 +43,7 @@ function LoginForm() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="inline-block mb-6">
-            <img src="/images/cuanterus-logo.png" alt="Cuanterus" className="h-10 mx-auto" />
+            <img src="/images/sidebar logo.png" alt="Cuanterus" className="h-10 mx-auto" />
           </Link>
           <h1 className="text-2xl font-bold text-[#F0F0F5]">Masuk ke Akun</h1>
           <p className="text-sm text-[#8B949E] mt-2">
