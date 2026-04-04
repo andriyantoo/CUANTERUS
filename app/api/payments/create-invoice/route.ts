@@ -103,11 +103,6 @@ export async function POST(request: Request) {
         coupon_id: couponId,
         user_id: user.id,
       });
-      await admin.rpc("increment_coupon_count", { coupon_id_input: couponId }).catch(() => {
-        // Fallback: manual increment
-        admin.from("coupons").update({ used_count: admin.rpc("", {}) as any }).eq("id", couponId);
-      });
-      // Simple increment
       const { data: c } = await admin.from("coupons").select("used_count").eq("id", couponId).single();
       if (c) {
         await admin.from("coupons").update({ used_count: c.used_count + 1 }).eq("id", couponId);
