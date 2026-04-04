@@ -36,12 +36,16 @@ export async function POST(request: Request) {
     const externalId = `cuanterus-${user.id}-${randomUUID().slice(0, 8)}`;
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://cuanterus.vercel.app";
 
+    // Handle product relation (could be object or array from join)
+    const product = Array.isArray(plan.product) ? plan.product[0] : plan.product;
+    const amount = Number(plan.price_idr);
+
     // Create Xendit invoice
     const invoice = await createInvoice({
       externalId,
-      amount: plan.price_idr,
+      amount,
       payerEmail: user.email!,
-      description: `${plan.product.name} - ${plan.name}`,
+      description: `${product?.name || "Cuanterus"} - ${plan.name}`,
       successRedirectUrl: `${baseUrl}/billing?payment=success`,
       failureRedirectUrl: `${baseUrl}/billing?payment=failed`,
     });
@@ -51,15 +55,15 @@ export async function POST(request: Request) {
       user_id: user.id,
       xendit_invoice_id: invoice.id,
       xendit_external_id: externalId,
-      amount_idr: plan.price_idr,
+      amount_idr: amount,
       status: "pending",
     });
 
     return NextResponse.json({ invoice_url: invoice.invoice_url });
-  } catch (error) {
-    console.error("Create invoice error:", error);
+  } catch (error: any) {
+    console.error("Create invoice error:", error?.message || error);
     return NextResponse.json(
-      { error: "Failed to create payment" },
+      { error: error?.message || "Failed to create payment" },
       { status: 500 }
     );
   }
