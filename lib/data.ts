@@ -6,7 +6,7 @@
 
 // ── Link CTA utama ──────────────────────────────
 // Ganti "#" ke URL A Member / Xendit lo yang beneran
-export const CTA_LINK = "#pricing";
+export const CTA_LINK = "/register";
 
 // ── Social media links ──────────────────────────
 export const SOCIALS = {
@@ -163,7 +163,7 @@ export const PRICING_PRODUCTS = [
           "Discord Voice Chat Access",
           "Free Consultation",
         ],
-        ctaLink: "https://cuanterus.in/member/signup/forex1month",
+        ctaLink: "/register",
       },
       {
         name: "3 Bulan",
@@ -176,7 +176,7 @@ export const PRICING_PRODUCTS = [
           "Discord Voice Chat Access",
           "Free Consultation",
         ],
-        ctaLink: "https://cuanterus.in/member/signup/forex3month",
+        ctaLink: "/register",
       },
       {
         name: "6 Bulan",
@@ -189,7 +189,7 @@ export const PRICING_PRODUCTS = [
           "Discord Voice Chat Access",
           "Free Consultation",
         ],
-        ctaLink: "https://cuanterus.in/member/signup/forex6month",
+        ctaLink: "/register",
       },
       {
         name: "12 Bulan",
@@ -202,7 +202,7 @@ export const PRICING_PRODUCTS = [
           "Discord Voice Chat Access",
           "Free Consultation",
         ],
-        ctaLink: "https://cuanterus.in/member/signup/forex12month",
+        ctaLink: "/register",
       },
     ],
   },
@@ -221,7 +221,7 @@ export const PRICING_PRODUCTS = [
           "Access on Crypto Live Trading",
           "Free Consultation",
         ],
-        ctaLink: "https://cuanterus.in/member/signup/crypto6month",
+        ctaLink: "/register",
       },
       {
         name: "12 Bulan",
@@ -235,7 +235,7 @@ export const PRICING_PRODUCTS = [
           "Access on Crypto Live Trading",
           "Free Consultation",
         ],
-        ctaLink: "https://cuanterus.in/member/signup/crypto12month",
+        ctaLink: "/register",
       },
     ],
   },
@@ -254,7 +254,7 @@ export const PRICING_PRODUCTS = [
           "Access on Crypto & Forex Live Trading",
           "Monthly Webinar",
         ],
-        ctaLink: "https://cuanterus.in/member/signup/complete3month",
+        ctaLink: "/register",
       },
       {
         name: "6 Bulan",
@@ -268,7 +268,7 @@ export const PRICING_PRODUCTS = [
           "Access on Crypto & Forex Live Trading",
           "Monthly Webinar",
         ],
-        ctaLink: "https://cuanterus.in/member/signup/complete6month",
+        ctaLink: "/register",
       },
       {
         name: "12 Bulan",
@@ -282,7 +282,7 @@ export const PRICING_PRODUCTS = [
           "Access on Crypto & Forex Live Trading",
           "Monthly Webinar",
         ],
-        ctaLink: "https://cuanterus.in/member/signup/complete12month",
+        ctaLink: "/register",
       },
     ],
   },

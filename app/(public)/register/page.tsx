@@ -33,7 +33,7 @@ export default function RegisterPage() {
       password,
       options: {
         data: { full_name: fullName },
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/billing`,
       },
     });
 
@@ -59,7 +59,7 @@ export default function RegisterPage() {
           <h1 className="text-2xl font-bold text-[#F0F0F5] mb-2">Cek Email Kamu</h1>
           <p className="text-sm text-[#8B949E]">
             Kami sudah kirim link konfirmasi ke <strong className="text-[#F0F0F5]">{email}</strong>.
-            Klik link di email untuk mengaktifkan akun.
+            Klik link di email untuk mengaktifkan akun dan pilih paket.
           </p>
           <Link href="/login">
             <Button variant="secondary" className="mt-6">
