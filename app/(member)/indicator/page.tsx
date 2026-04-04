@@ -176,9 +176,9 @@ export default function IndicatorPage() {
       }
 
       // Sort markers by time and set
-      markers.sort((a, b) => a.time - b.time);
+      markers.sort((a: any, b: any) => a.time - b.time);
       if (markers.length > 0) {
-        candleSeries.setMarkers(markers);
+        (candleSeries as any).setMarkers(markers);
       }
 
       chart.timeScale().fitContent();
