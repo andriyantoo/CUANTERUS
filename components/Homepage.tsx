@@ -423,15 +423,11 @@ export default function Homepage() {
       >
         <div className="max-w-6xl mx-auto px-4 md:px-8 flex items-center justify-between h-16 md:h-20">
           <div className="flex items-center gap-2">
-            <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm"
-              style={{ background: LIME, color: DARK_BG }}
-            >
-              C
-            </div>
-            <span className="font-bold text-lg" style={{ color: TEXT }}>
-              cuanterus
-            </span>
+            <img
+              src="/images/CUANTERUS LOGO TRANSPARANT.png"
+              alt="Cuanterus"
+              className="h-8 md:h-10"
+            />
           </div>
 
           <div className="hidden md:flex items-center gap-8">
@@ -619,7 +615,12 @@ export default function Homepage() {
               </div>
             </div>
             <div className="flex-1 w-full max-w-sm">
-              <Placeholder label="📸 Foto Andriyanto" className="float-anim" />
+              <img
+                src="/images/Andriyanto.jpg"
+                alt="Andriyanto — Financial Educator & Professional Trader"
+                className="w-full rounded-2xl float-anim"
+                style={{ border: `1px solid ${BORDER}` }}
+              />
             </div>
           </div>
         </FadeIn>
@@ -836,14 +837,12 @@ export default function Homepage() {
         <div className="max-w-6xl mx-auto px-4 md:px-8 py-12">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
-              <div className="flex items-center gap-2 mb-4">
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm"
-                  style={{ background: LIME, color: DARK_BG }}
-                >
-                  C
-                </div>
-                <span className="font-bold text-lg">cuanterus</span>
+              <div className="mb-4">
+                <img
+                  src="/images/CUANTERUS LOGO TRANSPARANT.png"
+                  alt="Cuanterus"
+                  className="h-8"
+                />
               </div>
               <p className="text-sm leading-relaxed max-w-sm" style={{ color: TEXT_SEC }}>
                 Platform edukasi trading terlengkap di Indonesia. Belajar dari mentor berpengalaman dengan kurikulum

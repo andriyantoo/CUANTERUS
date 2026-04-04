@@ -69,11 +69,8 @@ export function Sidebar({
       >
         {/* Logo */}
         <div className="flex items-center justify-between h-16 px-5 border-b border-[#222229]">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs bg-[#96FC03] text-[#0A0A0F]">
-              C
-            </div>
-            <span className="font-bold text-[#F0F0F5]">cuanterus</span>
+          <Link href="/dashboard">
+            <img src="/images/cuanterus-logo.png" alt="Cuanterus" className="h-7" />
           </Link>
           <button className="md:hidden text-[#8B949E]" onClick={onClose}>
             <X size={20} />

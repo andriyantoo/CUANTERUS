@@ -47,8 +47,7 @@ export default function ResetPasswordPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm bg-[#96FC03] text-[#0A0A0F]">C</div>
-            <span className="font-bold text-lg text-[#F0F0F5]">cuanterus</span>
+            <img src="/images/cuanterus-logo.png" alt="Cuanterus" className="h-10 mx-auto" />
           </Link>
           <h1 className="text-2xl font-bold text-[#F0F0F5]">Reset Password</h1>
           <p className="text-sm text-[#8B949E] mt-2">Masukkan password baru kamu.</p>

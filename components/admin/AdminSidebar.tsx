@@ -59,10 +59,8 @@ export function AdminSidebar({
         {/* Logo */}
         <div className="flex items-center justify-between h-16 px-5 border-b border-[#222229]">
           <Link href="/admin" className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs bg-[#96FC03] text-[#0A0A0F]">
-              <Shield size={14} />
-            </div>
-            <span className="font-bold text-[#F0F0F5]">Admin Panel</span>
+            <img src="/images/cuanterus-logo.png" alt="Cuanterus" className="h-6" />
+            <span className="text-xs font-bold text-[#96FC03] bg-[#96FC03]/10 px-1.5 py-0.5 rounded">ADMIN</span>
           </Link>
           <button className="md:hidden text-[#8B949E]" onClick={onClose}>
             <X size={20} />
