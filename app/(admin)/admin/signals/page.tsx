@@ -53,6 +53,7 @@ export default function AdminSignalsPage() {
   const [pair, setPair] = useState("");
   const [direction, setDirection] = useState<SignalDirection>("long");
   const [entryPrice, setEntryPrice] = useState("");
+  const [entryPrice2, setEntryPrice2] = useState("");
   const [stopLoss, setStopLoss] = useState("");
   const [tp1, setTp1] = useState("");
   const [tp2, setTp2] = useState("");
@@ -83,6 +84,43 @@ export default function AdminSignalsPage() {
     setLoading(false);
   }, []);
 
+  async function sendSignalNotification(signal: Signal) {
+    const supabase = createClient();
+    // Get all users with active subscription for this product (or cuantroopers)
+    const { data: subs } = await supabase
+      .from("subscriptions")
+      .select("user_id, product_id")
+      .eq("status", "active")
+      .gt("expires_at", new Date().toISOString());
+
+    if (!subs) return;
+
+    const { data: cuantroopersProduct } = await supabase
+      .from("products")
+      .select("id")
+      .eq("slug", "cuantroopers")
+      .single();
+
+    const targetUserIds = Array.from(new Set(
+      subs
+        .filter(s => s.product_id === signal.product_id || s.product_id === cuantroopersProduct?.id)
+        .map(s => s.user_id)
+    ));
+
+    const dirLabel = signal.direction === "long" ? "LONG ▲" : "SHORT ▼";
+    const notifications = targetUserIds.map(userId => ({
+      user_id: userId,
+      title: `Sinyal Baru: ${signal.pair} ${dirLabel}`,
+      body: `Entry: ${signal.entry_price || "-"} | SL: ${signal.stop_loss || "-"} | TP1: ${signal.take_profit_1 || "-"}`,
+      type: "info" as const,
+      link: "/signals",
+    }));
+
+    if (notifications.length > 0) {
+      await supabase.from("notifications").insert(notifications);
+    }
+  }
+
   useEffect(() => {
     fetchSignals();
   }, [fetchSignals]);
@@ -91,6 +129,7 @@ export default function AdminSignalsPage() {
     setPair("");
     setDirection("long");
     setEntryPrice("");
+    setEntryPrice2("");
     setStopLoss("");
     setTp1("");
     setTp2("");
@@ -111,6 +150,7 @@ export default function AdminSignalsPage() {
       pair: pair.trim().toUpperCase(),
       direction,
       entry_price: entryPrice ? parseFloat(entryPrice) : null,
+      entry_price_2: entryPrice2 ? parseFloat(entryPrice2) : null,
       stop_loss: stopLoss ? parseFloat(stopLoss) : null,
       take_profit_1: tp1 ? parseFloat(tp1) : null,
       take_profit_2: tp2 ? parseFloat(tp2) : null,
@@ -174,6 +214,11 @@ export default function AdminSignalsPage() {
     if (error) {
       toast.error("Gagal mengubah status publish");
     } else {
+      // Send notification to all members with matching subscription when publishing
+      if (!signal.is_published) {
+        sendSignalNotification(signal).catch(() => {});
+        toast.success("Sinyal dipublish & notifikasi dikirim!");
+      }
       fetchSignals();
     }
     setTogglingId(null);
@@ -242,12 +287,20 @@ export default function AdminSignalsPage() {
               </select>
             </div>
             <Input
-              label="Entry Price"
+              label="Entry Price 1"
               type="number"
               step="any"
               placeholder="1.0850"
               value={entryPrice}
               onChange={(e) => setEntryPrice(e.target.value)}
+            />
+            <Input
+              label="Entry Price 2 (opsional)"
+              type="number"
+              step="any"
+              placeholder="1.0830"
+              value={entryPrice2}
+              onChange={(e) => setEntryPrice2(e.target.value)}
             />
             <Input
               label="Stop Loss"
@@ -403,16 +456,11 @@ export default function AdminSignalsPage() {
                       <td className="px-6 py-4">
                         <Button
                           size="sm"
-                          variant="ghost"
+                          variant={signal.is_published ? "secondary" : "primary"}
                           onClick={() => togglePublished(signal)}
                           loading={togglingId === signal.id}
-                          title={signal.is_published ? "Unpublish" : "Publish"}
                         >
-                          {signal.is_published ? (
-                            <EyeOff size={14} />
-                          ) : (
-                            <Eye size={14} />
-                          )}
+                          {signal.is_published ? "Published" : "Publish"}
                         </Button>
                       </td>
                     </tr>

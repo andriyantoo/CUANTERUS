@@ -140,6 +140,7 @@ export interface Signal {
   pair: string;
   direction: SignalDirection;
   entry_price: number | null;
+  entry_price_2: number | null;
   stop_loss: number | null;
   take_profit_1: number | null;
   take_profit_2: number | null;

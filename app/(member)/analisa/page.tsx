@@ -82,9 +82,10 @@ export default function AnalisaPage() {
         <div className="h-[300px] sm:h-[450px] md:h-[600px]">
           <iframe
             key={activeChart}
-            src={`https://s.tradingview.com/widgetembed/?symbol=${activeChart}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=131318&studies=[]&theme=dark&style=1&timezone=Asia%2FJakarta&withdateranges=1&showpopupbutton=1&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]&locale=id&utm_source=cuanterus`}
+            src={`https://www.tradingview.com/widgetembed/?frameElementId=tradingview_chart&symbol=${activeChart}&interval=60&hidesidetoolbar=0&symboledit=1&saveimage=0&toolbarbg=131318&theme=dark&style=1&timezone=Asia%2FJakarta&withdateranges=1&locale=id`}
             className="w-full h-full border-0"
             allowFullScreen
+            sandbox="allow-scripts allow-same-origin allow-popups"
           />
         </div>
       </Card>
