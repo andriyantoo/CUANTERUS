@@ -42,10 +42,10 @@ export const FEATURES_SECTION = {
 };
 
 export const FEATURES = [
-  { icon: "BookOpen", label: "Kursus" },
-  { icon: "Signal", label: "Sinyal" },
+  { icon: "BookOpen", label: "Edukasi" },
+  { icon: "Signal", label: "Market Outlook" },
   { icon: "Lightbulb", label: "Insight" },
-  { icon: "Video", label: "Webinar" },
+  { icon: "Video", label: "Moonbag Live" },
   { icon: "Users", label: "Komunitas" },
   { icon: "ClipboardList", label: "Trading Log" },
 ];
