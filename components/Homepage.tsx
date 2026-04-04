@@ -426,7 +426,7 @@ export default function Homepage() {
             <img
               src="/images/CUANTERUS LOGO TRANSPARANT.png"
               alt="Cuanterus"
-              className="h-8 md:h-10"
+              className="h-10 md:h-12"
             />
           </div>
 
