@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   title: "Cuanterus — Platform Edukasi Trading di Indonesia",
   description:
     "Belajar trading dari nol dengan kurikulum terstruktur, sinyal real-time, dan komunitas trader aktif. Dipercaya 5,000+ trader Indonesia.",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
   keywords: [
     "belajar trading",
     "edukasi trading",
