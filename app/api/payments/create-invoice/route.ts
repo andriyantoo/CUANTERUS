@@ -87,9 +87,10 @@ export async function POST(request: Request) {
       failureRedirectUrl: `${baseUrl}/billing?payment=failed`,
     });
 
-    // Store pending payment
+    // Store pending payment (with plan_id for webhook to find correct plan)
     await admin.from("payments").insert({
       user_id: user.id,
+      plan_id: plan_id,
       xendit_invoice_id: invoice.id,
       xendit_external_id: externalId,
       amount_idr: amount,

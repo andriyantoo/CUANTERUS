@@ -46,12 +46,25 @@ export async function POST(request: Request) {
         })
         .eq("id", payment.id);
 
-      const { data: plan } = await admin
-        .from("plans")
-        .select("*, product:products(*)")
-        .eq("price_idr", payment.amount_idr)
-        .eq("is_active", true)
-        .single();
+      // Find plan — use plan_id from payment record (reliable with coupons)
+      // Fallback to price match for legacy payments without plan_id
+      let plan;
+      if (payment.plan_id) {
+        const { data } = await admin
+          .from("plans")
+          .select("*, product:products(*)")
+          .eq("id", payment.plan_id)
+          .single();
+        plan = data;
+      } else {
+        const { data } = await admin
+          .from("plans")
+          .select("*, product:products(*)")
+          .eq("price_idr", payment.amount_idr)
+          .eq("is_active", true)
+          .maybeSingle();
+        plan = data;
+      }
 
       if (plan) {
         const now = new Date();
