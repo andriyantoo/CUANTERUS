@@ -107,6 +107,7 @@ export const MASTERCLASS_FEATURES = [
     icon: "Lightbulb",
     title: "Insight dan Analisa yang Mendalam",
     desc: "Update market harian dan analisa teknikal yang membantu kamu mengambil keputusan trading yang tepat.",
+    image: "/images/Image 04-04-26 at 12.00.jpeg",
   },
   {
     icon: "Video",

@@ -711,7 +711,11 @@ export default function Homepage() {
                   </p>
                 </div>
                 <div className="flex-1 w-full">
-                  <Placeholder label={`📸 ${f.title}`} />
+                  {f.image ? (
+                    <img src={f.image} alt={f.title} className="w-full rounded-2xl" style={{ border: `1px solid ${BORDER}` }} />
+                  ) : (
+                    <Placeholder label={`📸 ${f.title}`} />
+                  )}
                 </div>
               </div>
             </FadeIn>
