@@ -802,10 +802,11 @@ export default function Homepage() {
               href="https://discord.gg/qSD3aHYp"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block px-8 py-4 rounded-2xl font-bold text-white text-base md:text-lg transition-all duration-300 hover:scale-[1.03] hover:shadow-xl"
+              className="inline-block px-8 py-4 rounded-2xl font-bold text-base md:text-lg transition-all duration-300 hover:scale-[1.03]"
               style={{
-                background: "linear-gradient(135deg, #5865F2 0%, #3B82F6 50%, #60A5FA 100%)",
-                boxShadow: "0 4px 24px rgba(88, 101, 242, 0.3)",
+                background: LIME,
+                color: DARK_BG,
+                boxShadow: `0 4px 24px ${LIME}30`,
               }}
             >
               Lihat Testimoni Member Sepenuhnya Disini
@@ -913,8 +914,13 @@ export default function Homepage() {
               </div>
             </div>
           </div>
-          <div className="mt-10 pt-6 border-t text-center text-xs" style={{ borderColor: BORDER, color: TEXT_SEC }}>
-            © {new Date().getFullYear()} Cuanterus. All rights reserved.
+          <div className="mt-10 pt-6 border-t" style={{ borderColor: BORDER }}>
+            <p className="text-[10px] leading-relaxed mb-4" style={{ color: TEXT_SEC }}>
+              Cuanterus adalah platform edukasi dan komunitas seputar investasi, crypto, forex, dan makroekonomi. Kami tidak menyediakan layanan pinjaman, P2P lending, pengelolaan dana, maupun jasa keuangan berizin. Seluruh informasi yang diberikan bersifat edukasi dan bukan merupakan saran investasi personal. Kami juga tidak pernah menawarkan produk pinjaman, investasi, ataupun profit secara pribadi. Apabila ada pihak yang menghubungi Anda dan mengaku dari Cuanterus untuk tujuan tersebut, berarti itu adalah pihak yang mengatasnamakan kami.
+            </p>
+            <p className="text-center text-xs" style={{ color: TEXT_SEC }}>
+              © {new Date().getFullYear()} Cuanterus. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
