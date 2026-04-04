@@ -69,6 +69,10 @@ function BillingContent() {
   const [validating, setValidating] = useState(false);
   const [selectedPlanForCoupon, setSelectedPlanForCoupon] = useState<string | null>(null);
 
+  // Manual transfer state
+  const [manualTransfer, setManualTransfer] = useState<any>(null);
+  const [creatingManual, setCreatingManual] = useState<string | null>(null);
+
   const daysLeft = activeSubscription ? daysUntil(activeSubscription.expires_at) : 0;
   const isExpiringSoon = daysLeft > 0 && daysLeft <= 14;
 
@@ -161,6 +165,26 @@ function BillingContent() {
       toast.error("Terjadi kesalahan. Coba lagi.");
       setPurchasing(null);
     }
+  }
+
+  async function handleManualTransfer(planId: string) {
+    setCreatingManual(planId);
+    try {
+      const res = await fetch("/api/manual-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "create", plan_id: planId }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.error || "Gagal membuat transfer manual");
+      } else {
+        setManualTransfer(data);
+      }
+    } catch {
+      toast.error("Terjadi kesalahan.");
+    }
+    setCreatingManual(null);
   }
 
   // Group plans by product
@@ -347,6 +371,16 @@ function BillingContent() {
                       >
                         {isCurrentPlan ? "Perpanjang" : "Beli Sekarang"}
                       </Button>
+                      <Button
+                        className="w-full mt-2"
+                        size="sm"
+                        variant="secondary"
+                        loading={creatingManual === plan.id}
+                        disabled={!!purchasing || !!creatingManual}
+                        onClick={() => handleManualTransfer(plan.id)}
+                      >
+                        Transfer Manual
+                      </Button>
                     </Card>
                   );
                 })}
@@ -354,6 +388,59 @@ function BillingContent() {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Manual Transfer Info Modal */}
+      {manualTransfer && (
+        <Card className="border-[#96FC03]/20 bg-[#96FC03]/5">
+          <div className="flex items-center justify-between mb-4">
+            <CardTitle>Transfer Manual</CardTitle>
+            <button onClick={() => setManualTransfer(null)} className="text-[#8B949E] hover:text-[#F0F0F5] text-xl">×</button>
+          </div>
+          <p className="text-sm text-[#8B949E] mb-4">{manualTransfer.description}</p>
+
+          <div className="space-y-3 bg-[#0A0A0F] rounded-xl p-4 mb-4">
+            <div className="flex justify-between">
+              <span className="text-sm text-[#8B949E]">Bank</span>
+              <span className="text-sm font-bold text-[#F0F0F5]">{manualTransfer.bank}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-[#8B949E]">No. Rekening</span>
+              <span className="text-sm font-mono font-bold text-[#96FC03] cursor-pointer" onClick={() => { navigator.clipboard.writeText(manualTransfer.account_number); toast.success("Nomor rekening disalin!"); }}>
+                {manualTransfer.account_number} 📋
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-[#8B949E]">Atas Nama</span>
+              <span className="text-sm font-bold text-[#F0F0F5]">{manualTransfer.account_name}</span>
+            </div>
+            <div className="border-t border-[#222229] my-2" />
+            <div className="flex justify-between">
+              <span className="text-sm text-[#8B949E]">Harga</span>
+              <span className="text-sm text-[#F0F0F5]">Rp {formatCurrency(manualTransfer.amount)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-[#8B949E]">Kode Unik</span>
+              <span className="text-sm text-amber-400">+{manualTransfer.unique_code}</span>
+            </div>
+            <div className="flex justify-between border-t border-[#222229] pt-2">
+              <span className="text-sm font-bold text-[#F0F0F5]">TOTAL TRANSFER</span>
+              <span className="text-lg font-extrabold font-mono text-[#96FC03] cursor-pointer" onClick={() => { navigator.clipboard.writeText(String(manualTransfer.total_amount)); toast.success("Jumlah disalin!"); }}>
+                Rp {formatCurrency(manualTransfer.total_amount)} 📋
+              </span>
+            </div>
+          </div>
+
+          <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 mb-4">
+            <p className="text-xs text-amber-400">
+              ⚠️ Transfer tepat sesuai jumlah di atas (termasuk kode unik). Pembayaran akan diverifikasi oleh admin dalam 1x24 jam.
+            </p>
+          </div>
+
+          <p className="text-xs text-[#8B949E] text-center">
+            Setelah transfer, konfirmasi akan dikirim via notifikasi.
+          </p>
+        </Card>
       )}
 
       {/* Payment History */}

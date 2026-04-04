@@ -794,6 +794,24 @@ export default function Homepage() {
             </FadeIn>
           ))}
         </div>
+
+        {/* Discord Testimonial Button */}
+        <FadeIn delay={0.3}>
+          <div className="text-center mt-10">
+            <a
+              href="https://discord.gg/qSD3aHYp"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 py-4 rounded-2xl font-bold text-white text-base md:text-lg transition-all duration-300 hover:scale-[1.03] hover:shadow-xl"
+              style={{
+                background: "linear-gradient(135deg, #5865F2 0%, #3B82F6 50%, #60A5FA 100%)",
+                boxShadow: "0 4px 24px rgba(88, 101, 242, 0.3)",
+              }}
+            >
+              Lihat Testimoni Member Sepenuhnya Disini
+            </a>
+          </div>
+        </FadeIn>
       </Section>
 
       <div className="glow-line" />

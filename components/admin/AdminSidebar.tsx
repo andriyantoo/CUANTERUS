@@ -30,6 +30,7 @@ const navItems = [
   { href: "/admin/discord", label: "Discord", icon: MessageCircle },
   { href: "/admin/coupons", label: "Kupon", icon: Tag },
   { href: "/admin/payments", label: "Payments", icon: CreditCard },
+  { href: "/admin/manual-payments", label: "Transfer Manual", icon: CreditCard },
 ];
 
 export function AdminSidebar({
