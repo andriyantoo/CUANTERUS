@@ -100,8 +100,8 @@ export const MASTERCLASS_FEATURES = [
   },
   {
     icon: "TrendingUp",
-    title: "Sinyal Trading Real-Time",
-    desc: "Dapatkan sinyal entry dan exit langsung ke device kamu. Analisa sudah dilakukan oleh tim profesional.",
+    title: "Market Outlook Harian",
+    desc: "Dapatkan analisa market dan outlook harian langsung ke device kamu. Disusun oleh tim analis profesional.",
   },
   {
     icon: "Lightbulb",
