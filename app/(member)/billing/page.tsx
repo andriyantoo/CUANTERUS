@@ -62,6 +62,13 @@ function BillingContent() {
   const [purchasing, setPurchasing] = useState<string | null>(null);
   const [showPlans, setShowPlans] = useState(false);
 
+  // Coupon state
+  const [couponCode, setCouponCode] = useState("");
+  const [couponValid, setCouponValid] = useState<any>(null);
+  const [couponError, setCouponError] = useState("");
+  const [validating, setValidating] = useState(false);
+  const [selectedPlanForCoupon, setSelectedPlanForCoupon] = useState<string | null>(null);
+
   const daysLeft = activeSubscription ? daysUntil(activeSubscription.expires_at) : 0;
   const isExpiringSoon = daysLeft > 0 && daysLeft <= 14;
 
@@ -100,13 +107,44 @@ function BillingContent() {
     fetchData();
   }, [user]);
 
+  async function validateCoupon(planId: string) {
+    if (!couponCode.trim()) return;
+    setValidating(true);
+    setCouponError("");
+    setCouponValid(null);
+    setSelectedPlanForCoupon(planId);
+
+    try {
+      const res = await fetch("/api/coupons/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: couponCode, plan_id: planId }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setCouponError(data.error);
+      } else {
+        setCouponValid(data);
+        toast.success(`Kupon "${data.code}" berlaku! Diskon Rp ${formatCurrency(data.discount_amount)}`);
+      }
+    } catch {
+      setCouponError("Gagal validasi kupon");
+    }
+    setValidating(false);
+  }
+
   async function handlePurchase(planId: string) {
     setPurchasing(planId);
     try {
+      const body: any = { plan_id: planId };
+      if (couponValid && selectedPlanForCoupon === planId) {
+        body.coupon_code = couponCode;
+      }
+
       const res = await fetch("/api/payments/create-invoice", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan_id: planId }),
+        body: JSON.stringify(body),
       });
 
       const data = await res.json();
@@ -218,6 +256,33 @@ function BillingContent() {
         <div className="space-y-6">
           <h2 className="text-lg font-bold text-[#F0F0F5]">Pilih Paket</h2>
 
+          {/* Coupon Input */}
+          <Card className="p-4">
+            <p className="text-sm font-medium text-[#F0F0F5] mb-2">Punya kode kupon?</p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Masukkan kode kupon"
+                value={couponCode}
+                onChange={(e) => {
+                  setCouponCode(e.target.value.toUpperCase());
+                  setCouponValid(null);
+                  setCouponError("");
+                }}
+                className="flex-1 px-4 py-2.5 rounded-xl bg-[#0A0A0F] border border-[#222229] text-[#F0F0F5] text-sm placeholder:text-[#8B949E]/60 focus:outline-none focus:ring-2 focus:ring-[#96FC03]/30 uppercase"
+              />
+            </div>
+            {couponError && <p className="text-xs text-red-400 mt-2">{couponError}</p>}
+            {couponValid && (
+              <div className="mt-2 p-2 rounded-lg bg-[#96FC03]/10 border border-[#96FC03]/20">
+                <p className="text-xs text-[#96FC03] font-medium">
+                  ✅ {couponValid.code} — Diskon {couponValid.discount_type === "percent" ? `${couponValid.discount_value}%` : `Rp ${formatCurrency(couponValid.discount_value)}`}
+                  {couponValid.description && ` — ${couponValid.description}`}
+                </p>
+              </div>
+            )}
+          </Card>
+
           {Object.entries(plansByProduct).map(([slug, productPlans]) => (
             <div key={slug}>
               <h3 className="text-sm font-semibold text-[#8B949E] uppercase tracking-wider mb-3">
@@ -250,13 +315,35 @@ function BillingContent() {
                           {formatCurrency(plan.price_idr)}
                         </span>
                       </div>
+                      {couponCode.trim() && !couponValid && (
+                        <Button
+                          className="w-full mb-2"
+                          size="sm"
+                          variant="secondary"
+                          loading={validating}
+                          onClick={() => validateCoupon(plan.id)}
+                        >
+                          Cek Kupon
+                        </Button>
+                      )}
+                      {couponValid && selectedPlanForCoupon === plan.id && (
+                        <p className="text-xs text-[#96FC03] mb-2 text-center">
+                          Harga setelah diskon: <strong>Rp {formatCurrency(couponValid.final_price)}</strong>
+                        </p>
+                      )}
                       <Button
                         className="w-full"
                         size="sm"
                         variant={isCurrentPlan ? "secondary" : "primary"}
                         loading={purchasing === plan.id}
                         disabled={!!purchasing}
-                        onClick={() => handlePurchase(plan.id)}
+                        onClick={() => {
+                          if (couponCode.trim() && !couponValid) {
+                            validateCoupon(plan.id).then(() => handlePurchase(plan.id));
+                          } else {
+                            handlePurchase(plan.id);
+                          }
+                        }}
                       >
                         {isCurrentPlan ? "Perpanjang" : "Beli Sekarang"}
                       </Button>

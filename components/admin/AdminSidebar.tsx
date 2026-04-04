@@ -12,6 +12,7 @@ import {
   FileText,
   MessageSquare,
   MessageCircle,
+  Tag,
   CreditCard,
   ArrowLeft,
   X,
@@ -27,6 +28,7 @@ const navItems = [
   { href: "/admin/market-insight", label: "Market Insight", icon: FileText },
   { href: "/admin/forum", label: "Forum", icon: MessageSquare },
   { href: "/admin/discord", label: "Discord", icon: MessageCircle },
+  { href: "/admin/coupons", label: "Kupon", icon: Tag },
   { href: "/admin/payments", label: "Payments", icon: CreditCard },
 ];
 
