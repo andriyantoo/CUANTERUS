@@ -4,9 +4,11 @@ import { verifyWebhookToken } from "@/lib/xendit";
 import { syncRoles } from "@/lib/discord";
 import { addMonths } from "date-fns";
 
+// A-Member legacy webhook URL — forward all webhooks here too
+const LEGACY_WEBHOOK_URL = "https://cuanterus.in/member/payment/xendit";
+
 export async function POST(request: Request) {
   try {
-    // Verify webhook token
     const callbackToken = request.headers.get("x-callback-token");
     if (!callbackToken || !verifyWebhookToken(callbackToken)) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
@@ -15,22 +17,26 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { id: xenditInvoiceId, status, external_id: externalId, payment_method } = body;
 
+    // Forward to A-Member legacy platform (fire and forget)
+    forwardToLegacy(body, callbackToken).catch((err) =>
+      console.error("Legacy forward error:", err)
+    );
+
     const admin = createAdminClient();
 
-    // Find the payment record
-    const { data: payment, error: paymentError } = await admin
+    // Find the payment record (only for new platform payments)
+    const { data: payment } = await admin
       .from("payments")
       .select("*")
       .eq("xendit_invoice_id", xenditInvoiceId)
-      .single();
+      .maybeSingle();
 
-    if (paymentError || !payment) {
-      console.error("Payment not found:", xenditInvoiceId);
-      return NextResponse.json({ error: "Payment not found" }, { status: 404 });
+    // If payment not found in new platform, it's an A-Member payment — already forwarded, just return OK
+    if (!payment) {
+      return NextResponse.json({ success: true, forwarded: true });
     }
 
     if (status === "PAID") {
-      // Update payment status
       await admin
         .from("payments")
         .update({
@@ -40,7 +46,6 @@ export async function POST(request: Request) {
         })
         .eq("id", payment.id);
 
-      // Find which plan was purchased based on the amount
       const { data: plan } = await admin
         .from("plans")
         .select("*, product:products(*)")
@@ -52,7 +57,6 @@ export async function POST(request: Request) {
         const now = new Date();
         const expiresAt = addMonths(now, plan.duration_months);
 
-        // Create subscription
         const { data: subscription } = await admin
           .from("subscriptions")
           .insert({
@@ -66,7 +70,6 @@ export async function POST(request: Request) {
           .select()
           .single();
 
-        // Link payment to subscription
         if (subscription) {
           await admin
             .from("payments")
@@ -100,7 +103,6 @@ export async function POST(request: Request) {
           }
         }
 
-        // Send notification
         await admin.from("notifications").insert({
           user_id: payment.user_id,
           title: "Pembayaran Berhasil!",
@@ -120,5 +122,23 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Webhook error:", error);
     return NextResponse.json({ error: "Webhook processing failed" }, { status: 500 });
+  }
+}
+
+/**
+ * Forward webhook payload to A-Member legacy platform
+ */
+async function forwardToLegacy(body: any, callbackToken: string) {
+  const res = await fetch(LEGACY_WEBHOOK_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-callback-token": callbackToken,
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    console.error(`Legacy forward failed: ${res.status} ${await res.text()}`);
   }
 }
