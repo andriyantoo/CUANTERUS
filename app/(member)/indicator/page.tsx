@@ -78,7 +78,7 @@ export default function IndicatorPage() {
       };
 
       // Dynamic import lightweight-charts (client only)
-      const { createChart, ColorType, LineStyle } = await import("lightweight-charts");
+      const { createChart, ColorType, LineStyle, CandlestickSeries, LineSeries } = await import("lightweight-charts");
 
       // Clear previous chart
       if (chartInstance.current) {
@@ -113,7 +113,7 @@ export default function IndicatorPage() {
       chartInstance.current = chart;
 
       // Candlestick series
-      const candleSeries = chart.addCandlestickSeries({
+      const candleSeries = chart.addSeries(CandlestickSeries, {
         upColor: "#089981",
         downColor: "#F23645",
         borderUpColor: "#089981",
@@ -146,7 +146,7 @@ export default function IndicatorPage() {
             ? LineStyle.Dotted
             : LineStyle.Solid;
 
-          const lineSeries = chart.addLineSeries({
+          const lineSeries = chart.addSeries(LineSeries, {
             color: plot.color,
             lineWidth: plot.width as 1 | 2 | 3 | 4,
             lineStyle,
