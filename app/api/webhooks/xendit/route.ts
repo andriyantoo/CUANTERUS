@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { verifyWebhookToken } from "@/lib/xendit";
 import { syncRoles } from "@/lib/discord";
 import { addMonths } from "date-fns";
+import { addSubscriber, MAILKETING_LIST_PAID } from "@/lib/mailketing";
 
 // A-Member legacy webhook URL — forward all webhooks here too
 const LEGACY_WEBHOOK_URL = "https://cuanterus.in/member/payment/xendit";
@@ -123,6 +124,21 @@ export async function POST(request: Request) {
           type: "success",
           link: "/dashboard",
         });
+
+        // Add paid member to Mailketing list (fire and forget)
+        const { data: paidProfile } = await admin
+          .from("profiles")
+          .select("email, full_name")
+          .eq("id", payment.user_id)
+          .single();
+
+        if (paidProfile?.email) {
+          addSubscriber({
+            listId: MAILKETING_LIST_PAID,
+            email: paidProfile.email,
+            firstName: paidProfile.full_name || "",
+          }).catch((err) => console.error("[Mailketing] Xendit webhook error:", err));
+        }
       }
     } else if (status === "EXPIRED") {
       await admin

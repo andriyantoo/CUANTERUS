@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { addMonths } from "date-fns";
+import { addSubscriber, MAILKETING_LIST_PAID } from "@/lib/mailketing";
 
 /**
  * POST /api/webhooks/mesinotomatis
@@ -99,6 +100,21 @@ export async function POST(request: Request) {
       type: "success",
       link: "/dashboard",
     });
+
+    // Add paid member to Mailketing list (fire and forget)
+    const { data: paidProfile } = await admin
+      .from("profiles")
+      .select("email, full_name")
+      .eq("id", mp.user_id)
+      .single();
+
+    if (paidProfile?.email) {
+      addSubscriber({
+        listId: MAILKETING_LIST_PAID,
+        email: paidProfile.email,
+        firstName: paidProfile.full_name || "",
+      }).catch((err) => console.error("[Mailketing] MesinOtomatis webhook error:", err));
+    }
 
     console.log(`[MesinOtomatis] Auto-approved payment ${mp.id} for user ${mp.user_id}`);
 
