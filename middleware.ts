@@ -16,6 +16,7 @@ export const config = {
     "/analisa/:path*",
     "/indicator/:path*",
     "/forum/:path*",
+    "/tools/:path*",
     "/profile/:path*",
     "/billing/:path*",
     "/admin/:path*",
