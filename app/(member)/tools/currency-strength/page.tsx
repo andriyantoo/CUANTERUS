@@ -60,7 +60,7 @@ function generateStrengthData(seed: number): CurrencyStrength[] {
     return {
       ...c,
       strength: Math.max(-100, Math.min(100, strength)),
-      trend: strength > 20 ? "bullish" : strength < -20 ? "bearish" : "neutral",
+      trend: (strength > 20 ? "bullish" : strength < -20 ? "bearish" : "neutral") as CurrencyStrength["trend"],
       pairs,
     };
   }).sort((a, b) => b.strength - a.strength);
