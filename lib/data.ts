@@ -10,9 +10,9 @@ export const CTA_LINK = "/register";
 
 // ── Social media links ──────────────────────────
 export const SOCIALS = {
-  youtube: "https://youtube.com/cuanterus",
-  tiktok: "https://tiktok.com/@andricuanterus",
-  instagram: "https://instagram.com/andriyantoo",
+  youtube: "https://www.youtube.com/cuanterus",
+  tiktok: "http://tiktok.com/cuanterusidn",
+  instagram: "https://www.instagram.com/cuanterusidn",
   discord: "https://discord.gg/cuanterus",
   whatsapp: "#", // Ganti ke link WA group
   telegram: "#", // Ganti ke link Telegram
