@@ -848,6 +848,117 @@ export default function Homepage() {
 
       <div className="glow-line" />
 
+      {/* ═══ TRADING TOOLS ═══ */}
+      <Section className="py-16 md:py-24">
+        <FadeIn>
+          <div className="text-center mb-12">
+            <Badge>Premium Tools</Badge>
+            <h2 className="text-2xl md:text-3xl font-bold mt-4 mb-4">
+              Trading Tools yang Bikin Kamu{" "}
+              <span style={{ color: LIME }}>Lebih Profitable</span>
+            </h2>
+            <p className="text-sm md:text-base max-w-2xl mx-auto" style={{ color: TEXT_SEC }}>
+              Akses tools premium yang dirancang khusus untuk membantu kamu mengambil keputusan trading lebih cerdas dan terukur.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="4" y="2" width="16" height="20" rx="2" /><line x1="8" y1="6" x2="16" y2="6" /><line x1="8" y1="10" x2="16" y2="10" /><line x1="8" y1="14" x2="12" y2="14" />
+                  </svg>
+                ),
+                title: "Position Sizing Calculator",
+                desc: "Hitung lot size yang tepat berdasarkan balance, risk %, dan stop loss. Tidak perlu kalkulasi manual lagi.",
+              },
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                  </svg>
+                ),
+                title: "Trading Journal",
+                desc: "Catat setiap trade, lacak win rate, P&L, dan analisa performa kamu. Terintegrasi dengan chart TradingView.",
+              },
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" />
+                  </svg>
+                ),
+                title: "Compound Calculator",
+                desc: "Simulasi pertumbuhan akun dengan compounding. Auto-import data dari Trading Journal untuk proyeksi realistis.",
+              },
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                ),
+                title: "Economic Calendar",
+                desc: "Jadwal rilis data ekonomi high-impact: NFP, FOMC, CPI, dan 30+ event penting lainnya. Filter by currency & impact.",
+              },
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                  </svg>
+                ),
+                title: "Currency Strength Meter",
+                desc: "Lihat kekuatan relatif 8 mata uang utama secara real-time. Temukan pair terbaik untuk di-trade hari ini.",
+              },
+              {
+                icon: (
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 20V10" /><path d="M18 20V4" /><path d="M6 20v-4" />
+                  </svg>
+                ),
+                title: "Live TradingView Chart",
+                desc: "Chart TradingView terintegrasi langsung di Trading Journal. Analisa chart sambil catat trade tanpa buka tab baru.",
+              },
+            ].map((tool, i) => (
+              <div
+                key={i}
+                className="rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1"
+                style={{
+                  background: DARK_CARD,
+                  border: `1px solid ${BORDER}`,
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.borderColor = `${LIME}30`;
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.borderColor = BORDER;
+                }}
+              >
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                  style={{ background: `${LIME}12`, color: LIME }}
+                >
+                  {tool.icon}
+                </div>
+                <h3 className="text-base font-bold mb-2" style={{ color: TEXT }}>
+                  {tool.title}
+                </h3>
+                <p className="text-sm leading-relaxed" style={{ color: TEXT_SEC }}>
+                  {tool.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <CTAButton href={CTA_LINK} small>
+              Akses Semua Tools
+            </CTAButton>
+          </div>
+        </FadeIn>
+      </Section>
+
+      <div className="glow-line" />
+
       {/* ═══ PRICING ═══ */}
       <PricingSection activeTab={activeTab} setActiveTab={setActiveTab} />
 
