@@ -102,6 +102,7 @@ export const MASTERCLASS_FEATURES = [
     icon: "TrendingUp",
     title: "Market Outlook Harian",
     desc: "Dapatkan analisa market dan outlook harian langsung ke device kamu. Disusun oleh tim analis profesional.",
+    image: "/images/Image 05-04-26 at 13.43.jpeg",
   },
   {
     icon: "Lightbulb",
