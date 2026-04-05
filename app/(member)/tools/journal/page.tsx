@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useUser } from "@/hooks/useUser";
 import { Card, CardTitle } from "@/components/ui/Card";
@@ -21,6 +21,8 @@ import {
   Trash2,
   ChevronDown,
   ChevronUp,
+  LineChart,
+  ExternalLink,
 } from "lucide-react";
 
 interface Trade {
@@ -45,6 +47,53 @@ const PAIRS = [
   "EUR/JPY", "GBP/JPY", "AUD/JPY", "EUR/GBP", "EUR/AUD", "GBP/AUD", "XAU/USD",
 ];
 
+// Map pair format to TradingView symbol
+function toTvSymbol(pair: string): string {
+  const clean = pair.replace("/", "");
+  if (clean === "XAUUSD") return "OANDA:XAUUSD";
+  return "FX:" + clean;
+}
+
+function TradingViewChart({ symbol, className }: { symbol: string; className?: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    // Clear previous widget
+    containerRef.current.innerHTML = "";
+
+    const script = document.createElement("script");
+    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+    script.type = "text/javascript";
+    script.async = true;
+    script.innerHTML = JSON.stringify({
+      autosize: true,
+      symbol: symbol,
+      interval: "60",
+      timezone: "Asia/Jakarta",
+      theme: "dark",
+      style: "1",
+      locale: "en",
+      backgroundColor: "rgba(19, 19, 24, 1)",
+      gridColor: "rgba(34, 34, 41, 0.6)",
+      hide_top_toolbar: false,
+      hide_legend: false,
+      allow_symbol_change: true,
+      save_image: false,
+      calendar: false,
+      support_host: "https://www.tradingview.com",
+    });
+
+    containerRef.current.appendChild(script);
+  }, [symbol]);
+
+  return (
+    <div className={className}>
+      <div ref={containerRef} className="w-full h-full" />
+    </div>
+  );
+}
+
 export default function TradingJournalPage() {
   const { user } = useUser();
   const [trades, setTrades] = useState<Trade[]>([]);
@@ -53,6 +102,8 @@ export default function TradingJournalPage() {
   const [saving, setSaving] = useState(false);
   const [expandedTrade, setExpandedTrade] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [showChart, setShowChart] = useState(true);
+  const [chartPair, setChartPair] = useState("EUR/USD");
 
   // Form state
   const [form, setForm] = useState({
@@ -219,6 +270,47 @@ export default function TradingJournalPage() {
         </Card>
       </div>
 
+      {/* TradingView Chart */}
+      <Card className="!p-0 overflow-hidden">
+        <div className="flex items-center justify-between p-4 border-b border-[#222229]">
+          <div className="flex items-center gap-3">
+            <LineChart size={16} className="text-[#96FC03]" />
+            <span className="text-sm font-bold text-[#F0F0F5]">Live Chart</span>
+            {/* Pair quick switch */}
+            <select
+              value={chartPair}
+              onChange={(e) => setChartPair(e.target.value)}
+              className="ml-2 px-3 py-1 rounded-lg bg-[#0A0A0F] border border-[#222229] text-[#F0F0F5] text-xs focus:outline-none focus:ring-1 focus:ring-[#96FC03]/30"
+            >
+              {PAIRS.map((p) => <option key={p} value={p}>{p}</option>)}
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <a
+              href={`https://www.tradingview.com/chart/?symbol=${toTvSymbol(chartPair)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs text-[#8B949E] hover:text-[#96FC03] transition-colors"
+            >
+              <ExternalLink size={12} />
+              Buka di TradingView
+            </a>
+            <button
+              onClick={() => setShowChart(!showChart)}
+              className="text-xs px-2.5 py-1 rounded-lg border border-[#222229] text-[#8B949E] hover:text-[#F0F0F5] hover:border-[#96FC03]/30 transition-colors"
+            >
+              {showChart ? "Tutup" : "Buka"}
+            </button>
+          </div>
+        </div>
+        {showChart && (
+          <TradingViewChart
+            symbol={toTvSymbol(chartPair)}
+            className="h-[400px] md:h-[500px]"
+          />
+        )}
+      </Card>
+
       {/* New Trade Form */}
       {showForm && (
         <Card className="border-[#96FC03]/20">
@@ -230,7 +322,7 @@ export default function TradingJournalPage() {
                 <label className="block text-sm font-medium text-[#F0F0F5]">Pair</label>
                 <select
                   value={form.pair}
-                  onChange={(e) => setForm({ ...form, pair: e.target.value })}
+                  onChange={(e) => { setForm({ ...form, pair: e.target.value }); setChartPair(e.target.value); }}
                   className="w-full px-4 py-2.5 rounded-xl bg-[#131318] border border-[#222229] text-[#F0F0F5] text-sm focus:outline-none focus:ring-2 focus:ring-[#96FC03]/30 focus:border-[#96FC03]/50"
                 >
                   {PAIRS.map((p) => <option key={p} value={p}>{p}</option>)}

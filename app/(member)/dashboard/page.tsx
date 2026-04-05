@@ -11,11 +11,11 @@ import { daysUntil, formatDate, formatRelative, formatCurrency } from "@/lib/uti
 import { PRODUCT_NAMES, SIGNAL_STATUS_LABELS } from "@/lib/constants";
 import {
   BookOpen, TrendingUp, TrendingDown, BarChart3, Clock, AlertTriangle,
-  FileText, MessageSquare, Activity, CreditCard, ArrowRight, Sparkles,
+  FileText, Activity, CreditCard, ArrowRight, Sparkles,
   X,
 } from "lucide-react";
 import Link from "next/link";
-import type { Signal, MarketInsight, ForumThread } from "@/lib/types";
+import type { Signal, MarketInsight } from "@/lib/types";
 
 const quickLinks = [
   { href: "/courses", label: "Edukasi", icon: BookOpen, desc: "Mulai belajar", color: "#96FC03" },
@@ -28,7 +28,6 @@ export default function DashboardPage() {
 
   const [signals, setSignals] = useState<Signal[]>([]);
   const [insights, setInsights] = useState<MarketInsight[]>([]);
-  const [threads, setThreads] = useState<ForumThread[]>([]);
   const [loadingData, setLoadingData] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
 
@@ -56,7 +55,7 @@ export default function DashboardPage() {
     async function fetchData() {
       const supabase = createClient();
 
-      const [signalsRes, insightsRes, threadsRes] = await Promise.all([
+      const [signalsRes, insightsRes] = await Promise.all([
         supabase
           .from("signals")
           .select("*, product:products(*)")
@@ -69,16 +68,10 @@ export default function DashboardPage() {
           .eq("is_published", true)
           .order("created_at", { ascending: false })
           .limit(3),
-        supabase
-          .from("forum_threads")
-          .select("*, author:profiles(full_name, role), channel:forum_channels(name, icon)")
-          .order("last_activity_at", { ascending: false })
-          .limit(5),
       ]);
 
       setSignals((signalsRes.data ?? []) as Signal[]);
       setInsights((insightsRes.data ?? []) as MarketInsight[]);
-      setThreads((threadsRes.data ?? []) as ForumThread[]);
       setLoadingData(false);
     }
 
@@ -285,39 +278,6 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Forum Highlights */}
-      {threads.length > 0 && (
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-sm font-bold text-[#F0F0F5] flex items-center gap-2">
-              <MessageSquare size={16} className="text-[#06B6D4]" />
-              Diskusi Terbaru
-            </h2>
-            <Link href="/forum" className="text-xs text-[#96FC03] hover:underline flex items-center gap-1">
-              Lihat semua <ArrowRight size={12} />
-            </Link>
-          </div>
-          <Card className="!p-0 divide-y divide-[#222229]">
-            {threads.map((thread) => (
-              <Link key={thread.id} href="/forum" className="block px-4 py-3 hover:bg-[#131318]/50 transition-colors">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs">{thread.channel?.icon}</span>
-                  <p className="text-sm text-[#F0F0F5] truncate flex-1">{thread.title}</p>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className="text-[10px] text-[#8B949E]">
-                      {thread.author?.full_name?.split(" ")[0] || "Member"}
-                    </span>
-                    {thread.author?.role === "admin" && (
-                      <Badge variant="amber" className="text-[6px] py-0 px-1">Mentor</Badge>
-                    )}
-                    <span className="text-[10px] text-[#8B949E]">{formatRelative(thread.last_activity_at)}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </Card>
-        </div>
-      )}
     </div>
   );
 }
