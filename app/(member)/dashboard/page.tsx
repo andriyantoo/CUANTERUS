@@ -179,30 +179,32 @@ export default function DashboardPage() {
         </Card>
       )}
 
-      {/* Quick Links Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        {quickLinks.map((item) => (
-          <Link key={item.href} href={item.href}>
-            <Card hover className="h-full">
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: `${item.color}15`, color: item.color }}
-                >
-                  <item.icon size={20} />
+      {/* Quick Links Grid — only for active subscribers */}
+      {activeSubscription && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {quickLinks.map((item) => (
+            <Link key={item.href} href={item.href}>
+              <Card hover className="h-full">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: `${item.color}15`, color: item.color }}
+                  >
+                    <item.icon size={20} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-[#F0F0F5] truncate">{item.label}</p>
+                    <p className="text-[10px] text-[#8B949E] truncate">{item.desc}</p>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-semibold text-[#F0F0F5] truncate">{item.label}</p>
-                  <p className="text-[10px] text-[#8B949E] truncate">{item.desc}</p>
-                </div>
-              </div>
-            </Card>
-          </Link>
-        ))}
-      </div>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      )}
 
-      {/* Latest Signals */}
-      <div>
+      {/* Latest Signals — only for active subscribers */}
+      {activeSubscription && <div>
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-sm font-bold text-[#F0F0F5] flex items-center gap-2">
             <TrendingUp size={16} className="text-[#96FC03]" />
@@ -248,10 +250,10 @@ export default function DashboardPage() {
             ))}
           </div>
         )}
-      </div>
+      </div>}
 
-      {/* Latest Market Insight */}
-      {insights.length > 0 && (
+      {/* Latest Market Insight — only for active subscribers */}
+      {activeSubscription && insights.length > 0 && (
         <div>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-sm font-bold text-[#F0F0F5] flex items-center gap-2">

@@ -9,7 +9,7 @@ import { Toaster } from "sonner";
 
 export default function MemberLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user, profile, loading } = useUser();
+  const { user, profile, subscription, loading } = useUser();
   const router = useRouter();
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
 
   return (
     <div className="min-h-screen flex" style={{ background: "#0A0A0F", color: "#F0F0F5" }}>
-      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} hasSubscription={!!subscription} />
       <div className="flex-1 flex flex-col min-w-0">
         <Topbar profile={profile} onMenuClick={() => setSidebarOpen(true)} />
         <main className="flex-1 p-4 md:p-6 overflow-y-auto">

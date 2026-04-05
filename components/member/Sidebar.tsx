@@ -24,12 +24,12 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/courses", label: "Kursus", icon: BookOpen },
-  { href: "/signals", label: "Sinyal", icon: TrendingUp },
-  { href: "/market-insight", label: "Market Insight", icon: FileText },
-  { href: "/profile", label: "Profil", icon: User },
-  { href: "/billing", label: "Billing", icon: CreditCard },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, alwaysShow: true },
+  { href: "/courses", label: "Kursus", icon: BookOpen, alwaysShow: false },
+  { href: "/signals", label: "Sinyal", icon: TrendingUp, alwaysShow: false },
+  { href: "/market-insight", label: "Market Insight", icon: FileText, alwaysShow: false },
+  { href: "/profile", label: "Profil", icon: User, alwaysShow: true },
+  { href: "/billing", label: "Billing", icon: CreditCard, alwaysShow: true },
 ];
 
 const toolItems = [
@@ -43,9 +43,11 @@ const toolItems = [
 export function Sidebar({
   open,
   onClose,
+  hasSubscription = false,
 }: {
   open: boolean;
   onClose: () => void;
+  hasSubscription?: boolean;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -86,33 +88,9 @@ export function Sidebar({
 
         {/* Nav */}
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          {navItems.map((item) => {
-            const isActive = pathname.startsWith(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={onClose}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
-                  isActive
-                    ? "bg-[#96FC03]/10 text-[#96FC03]"
-                    : "text-[#8B949E] hover:text-[#F0F0F5] hover:bg-[#131318]"
-                )}
-              >
-                <item.icon size={18} />
-                {item.label}
-              </Link>
-            );
-          })}
-
-          {/* Tools Section */}
-          <div className="pt-4 mt-4 border-t border-[#222229]">
-            <div className="flex items-center gap-2 px-3 mb-2">
-              <Wrench size={12} className="text-[#8B949E]/60" />
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#8B949E]/60">Tools</span>
-            </div>
-            {toolItems.map((item) => {
+          {navItems
+            .filter((item) => item.alwaysShow || hasSubscription)
+            .map((item) => {
               const isActive = pathname.startsWith(item.href);
               return (
                 <Link
@@ -131,7 +109,35 @@ export function Sidebar({
                 </Link>
               );
             })}
-          </div>
+
+          {/* Tools Section — only for active subscribers */}
+          {hasSubscription && (
+            <div className="pt-4 mt-4 border-t border-[#222229]">
+              <div className="flex items-center gap-2 px-3 mb-2">
+                <Wrench size={12} className="text-[#8B949E]/60" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#8B949E]/60">Tools</span>
+              </div>
+              {toolItems.map((item) => {
+                const isActive = pathname.startsWith(item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={onClose}
+                    className={cn(
+                      "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-colors",
+                      isActive
+                        ? "bg-[#96FC03]/10 text-[#96FC03]"
+                        : "text-[#8B949E] hover:text-[#F0F0F5] hover:bg-[#131318]"
+                    )}
+                  >
+                    <item.icon size={18} />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </nav>
 
         {/* Logout */}
