@@ -23,6 +23,8 @@ import {
   ChevronUp,
   LineChart,
   ExternalLink,
+  Pencil,
+  Check,
 } from "lucide-react";
 
 interface Trade {
@@ -177,6 +179,54 @@ export default function TradingJournalPage() {
     const supabase = createClient();
     await supabase.from("trade_journal").delete().eq("id", id);
     setTrades((prev) => prev.filter((t) => t.id !== id));
+  }
+
+  // Inline edit state
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editFields, setEditFields] = useState({
+    status: "" as Trade["status"],
+    exit_price: "",
+    pnl_usd: "",
+    notes: "",
+  });
+
+  function startEdit(trade: Trade) {
+    setEditingId(trade.id);
+    setEditFields({
+      status: trade.status,
+      exit_price: trade.exit_price?.toString() ?? "",
+      pnl_usd: trade.pnl_usd?.toString() ?? "",
+      notes: trade.notes ?? "",
+    });
+  }
+
+  async function handleUpdate(id: string) {
+    const supabase = createClient();
+    const updates: Record<string, unknown> = {
+      status: editFields.status,
+      exit_price: editFields.exit_price ? parseFloat(editFields.exit_price) : null,
+      pnl_usd: editFields.pnl_usd ? parseFloat(editFields.pnl_usd) : null,
+      notes: editFields.notes || null,
+      closed_at: editFields.status !== "open" ? new Date().toISOString() : null,
+      updated_at: new Date().toISOString(),
+    };
+
+    await supabase.from("trade_journal").update(updates).eq("id", id);
+
+    setTrades((prev) =>
+      prev.map((t) =>
+        t.id === id
+          ? {
+              ...t,
+              status: editFields.status,
+              exit_price: editFields.exit_price ? parseFloat(editFields.exit_price) : null,
+              pnl_usd: editFields.pnl_usd ? parseFloat(editFields.pnl_usd) : null,
+              notes: editFields.notes || null,
+            }
+          : t
+      )
+    );
+    setEditingId(null);
   }
 
   const filteredTrades = useMemo(() => {
@@ -592,20 +642,87 @@ export default function TradingJournalPage() {
                     </div>
                     <div>
                       <p className="text-xs text-[#8B949E] mb-0.5">Exit</p>
-                      <p className="text-[#F0F0F5] font-mono">{trade.exit_price ?? "—"}</p>
+                      {editingId === trade.id ? (
+                        <input
+                          type="number"
+                          value={editFields.exit_price}
+                          onChange={(e) => setEditFields({ ...editFields, exit_price: e.target.value })}
+                          step="0.00001"
+                          placeholder="—"
+                          className="w-full px-2 py-1 rounded-lg bg-[#0A0A0F] border border-[#222229] text-[#F0F0F5] text-sm font-mono focus:outline-none focus:ring-1 focus:ring-[#96FC03]/30"
+                        />
+                      ) : (
+                        <p className="text-[#F0F0F5] font-mono">{trade.exit_price ?? "—"}</p>
+                      )}
                     </div>
                   </div>
-                  {trade.notes && (
-                    <div className="mt-3 p-3 rounded-xl bg-[#0A0A0F] border border-[#222229]">
-                      <p className="text-xs text-[#8B949E] mb-1">Notes</p>
-                      <p className="text-sm text-[#F0F0F5] whitespace-pre-wrap">{trade.notes}</p>
+
+                  {/* Editable fields */}
+                  {editingId === trade.id ? (
+                    <div className="mt-4 space-y-3">
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <div className="space-y-1">
+                          <label className="text-xs text-[#8B949E]">Status</label>
+                          <select
+                            value={editFields.status}
+                            onChange={(e) => setEditFields({ ...editFields, status: e.target.value as Trade["status"] })}
+                            className="w-full px-3 py-2 rounded-lg bg-[#0A0A0F] border border-[#222229] text-[#F0F0F5] text-sm focus:outline-none focus:ring-1 focus:ring-[#96FC03]/30"
+                          >
+                            <option value="open">Open</option>
+                            <option value="win">Win</option>
+                            <option value="loss">Loss</option>
+                            <option value="breakeven">Breakeven</option>
+                          </select>
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-xs text-[#8B949E]">P&L (USD)</label>
+                          <input
+                            type="number"
+                            value={editFields.pnl_usd}
+                            onChange={(e) => setEditFields({ ...editFields, pnl_usd: e.target.value })}
+                            step="0.01"
+                            placeholder="0.00"
+                            className="w-full px-3 py-2 rounded-lg bg-[#0A0A0F] border border-[#222229] text-[#F0F0F5] text-sm font-mono focus:outline-none focus:ring-1 focus:ring-[#96FC03]/30"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-xs text-[#8B949E]">Notes</label>
+                        <textarea
+                          value={editFields.notes}
+                          onChange={(e) => setEditFields({ ...editFields, notes: e.target.value })}
+                          rows={2}
+                          placeholder="Catatan..."
+                          className="w-full px-3 py-2 rounded-lg bg-[#0A0A0F] border border-[#222229] text-[#F0F0F5] text-sm focus:outline-none focus:ring-1 focus:ring-[#96FC03]/30 resize-none"
+                        />
+                      </div>
+                      <div className="flex justify-end gap-2">
+                        <Button variant="secondary" size="sm" onClick={() => setEditingId(null)}>
+                          Batal
+                        </Button>
+                        <Button size="sm" onClick={() => handleUpdate(trade.id)}>
+                          <Check size={14} className="mr-1" /> Simpan
+                        </Button>
+                      </div>
                     </div>
+                  ) : (
+                    <>
+                      {trade.notes && (
+                        <div className="mt-3 p-3 rounded-xl bg-[#0A0A0F] border border-[#222229]">
+                          <p className="text-xs text-[#8B949E] mb-1">Notes</p>
+                          <p className="text-sm text-[#F0F0F5] whitespace-pre-wrap">{trade.notes}</p>
+                        </div>
+                      )}
+                      <div className="mt-3 flex justify-end gap-2">
+                        <Button variant="secondary" size="sm" onClick={() => startEdit(trade)}>
+                          <Pencil size={14} className="mr-1" /> Edit
+                        </Button>
+                        <Button variant="danger" size="sm" onClick={() => handleDelete(trade.id)}>
+                          <Trash2 size={14} className="mr-1" /> Hapus
+                        </Button>
+                      </div>
+                    </>
                   )}
-                  <div className="mt-3 flex justify-end">
-                    <Button variant="danger" size="sm" onClick={() => handleDelete(trade.id)}>
-                      <Trash2 size={14} className="mr-1" /> Hapus
-                    </Button>
-                  </div>
                 </div>
               )}
             </Card>
