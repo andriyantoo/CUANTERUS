@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { addMonths, addHours } from "date-fns";
+import { syncRoles } from "@/lib/discord";
 
 export async function POST(request: Request) {
   try {
@@ -117,6 +118,32 @@ export async function POST(request: Request) {
           admin_notes: admin_notes || null,
         })
         .eq("id", manual_payment_id);
+
+      // Auto-assign Discord role
+      const { data: mpProfile } = await admin
+        .from("profiles")
+        .select("discord_id")
+        .eq("id", mp.user_id)
+        .single();
+
+      if (mpProfile?.discord_id) {
+        const { data: allActiveSubs } = await admin
+          .from("subscriptions")
+          .select("product_id")
+          .eq("user_id", mp.user_id)
+          .eq("status", "active")
+          .gt("expires_at", new Date().toISOString());
+
+        const activeProductIds = (allActiveSubs ?? []).map((s) => s.product_id);
+
+        const { data: mappings } = await admin
+          .from("discord_role_mappings")
+          .select("product_id, discord_role_id");
+
+        if (mappings) {
+          await syncRoles(mpProfile.discord_id, activeProductIds, mappings);
+        }
+      }
 
       // Notify member
       await admin.from("notifications").insert({
