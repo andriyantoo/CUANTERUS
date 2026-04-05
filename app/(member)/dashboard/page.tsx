@@ -21,9 +21,6 @@ const quickLinks = [
   { href: "/courses", label: "Edukasi", icon: BookOpen, desc: "Mulai belajar", color: "#96FC03" },
   { href: "/signals", label: "Sinyal", icon: TrendingUp, desc: "Market outlook terbaru", color: "#3B82F6" },
   { href: "/market-insight", label: "Market Insight", icon: FileText, desc: "Download PDF analisa", color: "#F59E0B" },
-  { href: "/analisa", label: "Analisa", icon: BarChart3, desc: "TradingView charts", color: "#8B5CF6" },
-  { href: "/indicator", label: "Golden Trap", icon: Activity, desc: "Indikator eksklusif", color: "#EC4899" },
-  { href: "/forum", label: "Forum", icon: MessageSquare, desc: "Diskusi & sharing", color: "#06B6D4" },
 ];
 
 export default function DashboardPage() {

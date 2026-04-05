@@ -24,11 +24,7 @@ const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/courses", label: "Kursus", icon: BookOpen },
   { href: "/signals", label: "Sinyal", icon: TrendingUp },
-  { href: "/market-outlook", label: "Market Outlook", icon: BarChart3 },
   { href: "/market-insight", label: "Market Insight", icon: FileText },
-  { href: "/analisa", label: "Analisa", icon: BarChart2 },
-  { href: "/indicator", label: "Golden Trap", icon: Activity },
-  { href: "/forum", label: "Forum", icon: MessageSquare },
   { href: "/profile", label: "Profil", icon: User },
   { href: "/billing", label: "Billing", icon: CreditCard },
 ];
