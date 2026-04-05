@@ -318,15 +318,27 @@ export default function TradingJournalPage() {
           <form onSubmit={handleSubmit} className="mt-4 space-y-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {/* Pair */}
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 relative">
                 <label className="block text-sm font-medium text-[#F0F0F5]">Pair</label>
-                <select
+                <input
+                  type="text"
                   value={form.pair}
-                  onChange={(e) => { setForm({ ...form, pair: e.target.value }); setChartPair(e.target.value); }}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[#131318] border border-[#222229] text-[#F0F0F5] text-sm focus:outline-none focus:ring-2 focus:ring-[#96FC03]/30 focus:border-[#96FC03]/50"
-                >
-                  {PAIRS.map((p) => <option key={p} value={p}>{p}</option>)}
-                </select>
+                  onChange={(e) => {
+                    const val = e.target.value.toUpperCase();
+                    setForm({ ...form, pair: val });
+                  }}
+                  onBlur={() => {
+                    // Sync chart after typing
+                    setTimeout(() => setChartPair(form.pair), 150);
+                  }}
+                  placeholder="e.g. EUR/USD, BTC/USD"
+                  required
+                  list="pair-suggestions"
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#131318] border border-[#222229] text-[#F0F0F5] text-sm focus:outline-none focus:ring-2 focus:ring-[#96FC03]/30 focus:border-[#96FC03]/50 placeholder:text-[#8B949E]/60"
+                />
+                <datalist id="pair-suggestions">
+                  {PAIRS.map((p) => <option key={p} value={p} />)}
+                </datalist>
               </div>
 
               {/* Direction */}
