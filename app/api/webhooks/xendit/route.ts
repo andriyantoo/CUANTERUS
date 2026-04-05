@@ -4,6 +4,7 @@ import { verifyWebhookToken } from "@/lib/xendit";
 import { syncRoles } from "@/lib/discord";
 import { addMonths } from "date-fns";
 import { addSubscriber, MAILKETING_LIST_PAID } from "@/lib/mailketing";
+import { sendPaymentSuccessEmail } from "@/lib/email-templates";
 
 // A-Member legacy webhook URL — forward all webhooks here too
 const LEGACY_WEBHOOK_URL = "https://cuanterus.in/member/payment/xendit";
@@ -138,6 +139,13 @@ export async function POST(request: Request) {
             email: paidProfile.email,
             firstName: paidProfile.full_name || "",
           }).catch((err) => console.error("[Mailketing] Xendit webhook error:", err));
+
+          sendPaymentSuccessEmail(
+            paidProfile.email,
+            paidProfile.full_name || "",
+            plan.product.name,
+            plan.name,
+          ).catch((err) => console.error("[Email] Payment success email error:", err));
         }
       }
     } else if (status === "EXPIRED") {

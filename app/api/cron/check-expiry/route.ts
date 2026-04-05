@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { syncRoles } from "@/lib/discord";
+import { sendExpiryWarningEmail, sendExpiredEmail } from "@/lib/email-templates";
 
 /**
  * GET /api/cron/check-expiry
@@ -79,6 +80,18 @@ export async function GET(request: Request) {
           type: "warning",
           link: "/billing",
         });
+
+        // Send expired email
+        const { data: expiredProfile } = await admin
+          .from("profiles")
+          .select("email, full_name")
+          .eq("id", userId)
+          .single();
+
+        if (expiredProfile?.email) {
+          sendExpiredEmail(expiredProfile.email, expiredProfile.full_name || "")
+            .catch((err) => console.error("[Email] Expired email error:", err));
+        }
       }
     }
 
@@ -118,6 +131,18 @@ export async function GET(request: Request) {
             type: "warning",
             link: "/billing",
           });
+
+          // Send warning email
+          const { data: warnProfile } = await admin
+            .from("profiles")
+            .select("email, full_name")
+            .eq("id", sub.user_id)
+            .single();
+
+          if (warnProfile?.email) {
+            sendExpiryWarningEmail(warnProfile.email, warnProfile.full_name || "", daysLeft)
+              .catch((err) => console.error("[Email] Warning email error:", err));
+          }
 
           results.warnings++;
         }

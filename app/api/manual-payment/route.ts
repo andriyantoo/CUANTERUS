@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { addMonths, addHours } from "date-fns";
 import { syncRoles } from "@/lib/discord";
+import { sendPaymentSuccessEmail } from "@/lib/email-templates";
 
 export async function POST(request: Request) {
   try {
@@ -153,6 +154,22 @@ export async function POST(request: Request) {
         type: "success",
         link: "/dashboard",
       });
+
+      // Send payment success email
+      const { data: mpProfile } = await admin
+        .from("profiles")
+        .select("email, full_name")
+        .eq("id", mp.user_id)
+        .single();
+
+      if (mpProfile?.email) {
+        sendPaymentSuccessEmail(
+          mpProfile.email,
+          mpProfile.full_name || "",
+          product?.name || "Cuanterus",
+          plan.name,
+        ).catch((err) => console.error("[Email] Manual payment email error:", err));
+      }
 
       return NextResponse.json({ success: true });
     }

@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { addMonths } from "date-fns";
 import { syncRoles } from "@/lib/discord";
 import { addSubscriber, MAILKETING_LIST_PAID } from "@/lib/mailketing";
+import { sendPaymentSuccessEmail } from "@/lib/email-templates";
 
 /**
  * POST /api/webhooks/mesinotomatis
@@ -141,6 +142,13 @@ export async function POST(request: Request) {
         email: paidProfile.email,
         firstName: paidProfile.full_name || "",
       }).catch((err) => console.error("[Mailketing] MesinOtomatis webhook error:", err));
+
+      sendPaymentSuccessEmail(
+        paidProfile.email,
+        paidProfile.full_name || "",
+        product?.name || "Cuanterus",
+        plan.name,
+      ).catch((err) => console.error("[Email] Payment success email error:", err));
     }
 
     console.log(`[MesinOtomatis] Auto-approved payment ${mp.id} for user ${mp.user_id}`);
