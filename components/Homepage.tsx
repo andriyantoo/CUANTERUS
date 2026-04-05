@@ -737,6 +737,66 @@ export default function Homepage() {
                 <div className="flex-1 w-full">
                   {f.image ? (
                     <img src={f.image} alt={f.title} className="w-full rounded-2xl" style={{ border: `1px solid ${BORDER}` }} />
+                  ) : f.title === "Komprehensif" ? (
+                    <div className="rounded-2xl p-6 md:p-8" style={{ background: `linear-gradient(135deg, ${DARK_CARD} 0%, #1A1A22 100%)`, border: `1px solid ${BORDER}` }}>
+                      <div className="space-y-3">
+                        {[
+                          { level: "Basic", topics: "Pengenalan Trading, Cara Baca Chart, Candlestick Pattern", pct: "30%" },
+                          { level: "Intermediate", topics: "Risk Management, Technical Analysis, Support & Resistance", pct: "65%" },
+                          { level: "Advanced", topics: "Price Action, Multi-Timeframe, Trading Psychology", pct: "100%" },
+                        ].map((item, idx) => (
+                          <div key={idx}>
+                            <div className="flex items-center justify-between mb-1.5">
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-bold px-2 py-0.5 rounded" style={{ background: `${LIME}15`, color: LIME }}>{item.level}</span>
+                                <span className="text-xs" style={{ color: TEXT_SEC }}>{item.topics}</span>
+                              </div>
+                            </div>
+                            <div className="w-full bg-[#222229] rounded-full h-1.5">
+                              <div className="h-1.5 rounded-full" style={{ width: item.pct, background: `linear-gradient(90deg, ${LIME}, #3B82F6)` }} />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-6 flex items-center gap-4 flex-wrap">
+                        {["Video", "PDF", "Quiz", "Live Session"].map((tag) => (
+                          <span key={tag} className="text-[10px] font-semibold px-2.5 py-1 rounded-lg" style={{ background: `${LIME}10`, color: LIME, border: `1px solid ${LIME}20` }}>{tag}</span>
+                        ))}
+                      </div>
+                    </div>
+                  ) : f.title === "Market Outlook Harian" ? (
+                    <div className="rounded-2xl p-6 md:p-8" style={{ background: `linear-gradient(135deg, ${DARK_CARD} 0%, #1A1A22 100%)`, border: `1px solid ${BORDER}` }}>
+                      <div className="flex items-center gap-2 mb-4">
+                        <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                        <span className="text-xs font-bold" style={{ color: LIME }}>DAILY UPDATE</span>
+                        <span className="text-[10px]" style={{ color: TEXT_SEC }}>Setiap hari kerja</span>
+                      </div>
+                      <div className="space-y-2.5">
+                        {[
+                          { pair: "BTC/USDT", dir: "Bullish", color: "#22C55E" },
+                          { pair: "ETH/USDT", dir: "Bearish", color: "#EF4444" },
+                          { pair: "EUR/USD", dir: "Bullish", color: "#22C55E" },
+                          { pair: "XAU/USD", dir: "Neutral", color: "#F59E0B" },
+                        ].map((item, idx) => (
+                          <div key={idx} className="flex items-center justify-between py-2 border-b" style={{ borderColor: BORDER }}>
+                            <span className="text-sm font-semibold" style={{ color: TEXT }}>{item.pair}</span>
+                            <div className="flex items-center gap-2">
+                              <div className="w-16 h-4 rounded-sm overflow-hidden flex items-end gap-px">
+                                {Array.from({ length: 8 }).map((_, bi) => (
+                                  <div key={bi} className="flex-1 rounded-t-sm" style={{
+                                    height: `${Math.random() * 100}%`,
+                                    minHeight: "20%",
+                                    background: item.color + "60",
+                                  }} />
+                                ))}
+                              </div>
+                              <span className="text-xs font-bold" style={{ color: item.color }}>{item.dir}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-[10px] mt-4" style={{ color: TEXT_SEC }}>Analisa lengkap tersedia di member area</p>
+                    </div>
                   ) : (
                     <Placeholder label={`📸 ${f.title}`} />
                   )}
