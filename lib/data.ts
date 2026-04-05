@@ -64,7 +64,7 @@ export const PROGRAMS = [
     audience: "Cocok buat: yang mau fokus belajar di market crypto.",
     tag: "Populer",
     ctaText: "Lihat Harga & Benefit",
-    pricingTab: 1, // index of "Crypto Trading" tab
+    pricingTab: 0, // index of "Crypto Trading" tab
   },
   {
     title: "Forex Trader",
@@ -72,7 +72,7 @@ export const PROGRAMS = [
     audience: "Cocok buat: yang mau trading di market forex global.",
     tag: "Terlaris",
     ctaText: "Lihat Harga & Benefit",
-    pricingTab: 0, // index of "Forex Trading" tab
+    pricingTab: 2, // index of "Forex Trading" tab
     highlighted: true,
   },
   {
@@ -81,7 +81,7 @@ export const PROGRAMS = [
     audience: "Cocok buat: yang mau all-in dan serius jadi full-time trader.",
     tag: "Terlengkap",
     ctaText: "Lihat Harga & Benefit",
-    pricingTab: 2, // index of "Cuantroopers" tab
+    pricingTab: 1, // index of "Cuantroopers" tab
   },
 ];
 
@@ -151,63 +151,6 @@ export const PRICING_SECTION = {
 };
 
 export const PRICING_PRODUCTS = [
-  {
-    tab: "Forex Trading",
-    plans: [
-      {
-        name: "1 Bulan",
-        originalPrice: "750.000",
-        price: "700.000",
-        popular: false,
-        features: [
-          "Market Outlook",
-          "Akses Discord Sinyal Forex",
-          "Akses Voice Chat Discord",
-          "Konsultasi Gratis",
-        ],
-        ctaLink: "/register",
-      },
-      {
-        name: "3 Bulan",
-        originalPrice: "2.150.000",
-        price: "1.750.000",
-        popular: false,
-        features: [
-          "Market Outlook",
-          "Akses Discord Sinyal Forex",
-          "Akses Voice Chat Discord",
-          "Konsultasi Gratis",
-        ],
-        ctaLink: "/register",
-      },
-      {
-        name: "6 Bulan",
-        originalPrice: "3.600.000",
-        price: "2.950.000",
-        popular: true,
-        features: [
-          "Market Outlook",
-          "Akses Discord Sinyal Forex",
-          "Akses Voice Chat Discord",
-          "Konsultasi Gratis",
-        ],
-        ctaLink: "/register",
-      },
-      {
-        name: "12 Bulan",
-        originalPrice: "6.600.000",
-        price: "5.400.000",
-        popular: false,
-        features: [
-          "Market Outlook",
-          "Akses Discord Sinyal Forex",
-          "Akses Voice Chat Discord",
-          "Konsultasi Gratis",
-        ],
-        ctaLink: "/register",
-      },
-    ],
-  },
   {
     tab: "Crypto Trading",
     plans: [
@@ -283,6 +226,63 @@ export const PRICING_PRODUCTS = [
           "Akses Voice Chat Discord",
           "Akses Crypto & Forex Live Trading",
           "Webinar Bulanan",
+        ],
+        ctaLink: "/register",
+      },
+    ],
+  },
+  {
+    tab: "Forex Trading",
+    plans: [
+      {
+        name: "1 Bulan",
+        originalPrice: "750.000",
+        price: "700.000",
+        popular: false,
+        features: [
+          "Market Outlook",
+          "Akses Discord Sinyal Forex",
+          "Akses Voice Chat Discord",
+          "Konsultasi Gratis",
+        ],
+        ctaLink: "/register",
+      },
+      {
+        name: "3 Bulan",
+        originalPrice: "2.150.000",
+        price: "1.750.000",
+        popular: false,
+        features: [
+          "Market Outlook",
+          "Akses Discord Sinyal Forex",
+          "Akses Voice Chat Discord",
+          "Konsultasi Gratis",
+        ],
+        ctaLink: "/register",
+      },
+      {
+        name: "6 Bulan",
+        originalPrice: "3.600.000",
+        price: "2.950.000",
+        popular: true,
+        features: [
+          "Market Outlook",
+          "Akses Discord Sinyal Forex",
+          "Akses Voice Chat Discord",
+          "Konsultasi Gratis",
+        ],
+        ctaLink: "/register",
+      },
+      {
+        name: "12 Bulan",
+        originalPrice: "6.600.000",
+        price: "5.400.000",
+        popular: false,
+        features: [
+          "Market Outlook",
+          "Akses Discord Sinyal Forex",
+          "Akses Voice Chat Discord",
+          "Konsultasi Gratis",
         ],
         ctaLink: "/register",
       },
