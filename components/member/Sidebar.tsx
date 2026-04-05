@@ -35,6 +35,7 @@ const navItems = [
 const toolItems = [
   { href: "/tools/position-sizing", label: "Position Sizing", icon: Calculator },
   { href: "/tools/journal", label: "Trading Journal", icon: BookOpen },
+  { href: "/tools/compound", label: "Compound Calc", icon: TrendingUp },
   { href: "/tools/economic-calendar", label: "Economic Calendar", icon: CalendarDays },
   { href: "/tools/currency-strength", label: "Currency Strength", icon: Activity },
 ];
