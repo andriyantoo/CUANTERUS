@@ -25,6 +25,15 @@ interface MailketingList {
 }
 
 /**
+ * Build form-urlencoded body (Mailketing uses PHP/MailWizz backend)
+ */
+function buildForm(params: Record<string, string>): string {
+  return Object.entries(params)
+    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+    .join("&");
+}
+
+/**
  * Add a subscriber to a Mailketing list.
  * Silently fails (logs error) so it never blocks the main flow.
  */
@@ -37,8 +46,8 @@ export async function addSubscriber({ listId, email, firstName }: AddSubscriberP
   try {
     const res = await fetch(`${MAILKETING_API_URL}/addsubtolist`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: buildForm({
         api_token: MAILKETING_API_TOKEN,
         list_id: listId,
         email,
@@ -46,14 +55,20 @@ export async function addSubscriber({ listId, email, firstName }: AddSubscriberP
       }),
     });
 
-    const data = await res.json();
+    const text = await res.text();
+    let data: any;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = { raw: text };
+    }
 
     if (!res.ok) {
-      console.error("[Mailketing] addSubscriber error:", data);
+      console.error("[Mailketing] addSubscriber error:", res.status, data);
       return null;
     }
 
-    console.log(`[Mailketing] Subscriber added: ${email} → list ${listId}`);
+    console.log(`[Mailketing] Subscriber added: ${email} → list ${listId}`, data);
     return data;
   } catch (err) {
     console.error("[Mailketing] addSubscriber failed:", err);
@@ -73,8 +88,8 @@ export async function sendEmail({ fromName, fromEmail, recipient, subject, conte
   try {
     const res = await fetch(`${MAILKETING_API_URL}/send`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: buildForm({
         api_token: MAILKETING_API_TOKEN,
         from_name: fromName,
         from_email: fromEmail,
@@ -84,10 +99,16 @@ export async function sendEmail({ fromName, fromEmail, recipient, subject, conte
       }),
     });
 
-    const data = await res.json();
+    const text = await res.text();
+    let data: any;
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = { raw: text };
+    }
 
     if (!res.ok) {
-      console.error("[Mailketing] sendEmail error:", data);
+      console.error("[Mailketing] sendEmail error:", res.status, data);
       return null;
     }
 
@@ -109,13 +130,13 @@ export async function getAllLists(): Promise<MailketingList[]> {
 
   const res = await fetch(`${MAILKETING_API_URL}/viewlist`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ api_token: MAILKETING_API_TOKEN }),
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: buildForm({ api_token: MAILKETING_API_TOKEN }),
   });
 
   if (!res.ok) {
-    const error = await res.json();
-    throw new Error(error.message || "Failed to fetch Mailketing lists");
+    const text = await res.text();
+    throw new Error(`Failed to fetch Mailketing lists: ${res.status} ${text}`);
   }
 
   return res.json();
