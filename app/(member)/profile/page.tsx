@@ -13,7 +13,7 @@ import { useSearchParams } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 
 export default function ProfilePage() {
-  const { user, profile, loading } = useUser();
+  const { user, profile, subscription, loading } = useUser();
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -153,8 +153,8 @@ export default function ProfilePage() {
         </div>
       </Card>
 
-      {/* Discord Integration */}
-      <Card>
+      {/* Discord Integration — only for active subscribers */}
+      {subscription && <Card>
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "#5865F2" + "20" }}>
             <MessageCircle size={20} style={{ color: "#5865F2" }} />
@@ -209,7 +209,7 @@ export default function ProfilePage() {
             </Button>
           </a>
         )}
-      </Card>
+      </Card>}
 
       {/* Change Password */}
       <Card>
