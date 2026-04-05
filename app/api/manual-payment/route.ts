@@ -120,14 +120,14 @@ export async function POST(request: Request) {
         })
         .eq("id", manual_payment_id);
 
-      // Auto-assign Discord role
-      const { data: mpProfile } = await admin
+      // Auto-assign Discord role + get profile for email
+      const { data: approvedProfile } = await admin
         .from("profiles")
-        .select("discord_id")
+        .select("discord_id, email, full_name")
         .eq("id", mp.user_id)
         .single();
 
-      if (mpProfile?.discord_id) {
+      if (approvedProfile?.discord_id) {
         const { data: allActiveSubs } = await admin
           .from("subscriptions")
           .select("product_id")
@@ -142,7 +142,7 @@ export async function POST(request: Request) {
           .select("product_id, discord_role_id");
 
         if (mappings) {
-          await syncRoles(mpProfile.discord_id, activeProductIds, mappings);
+          await syncRoles(approvedProfile.discord_id, activeProductIds, mappings);
         }
       }
 
@@ -156,16 +156,10 @@ export async function POST(request: Request) {
       });
 
       // Send payment success email
-      const { data: mpProfile } = await admin
-        .from("profiles")
-        .select("email, full_name")
-        .eq("id", mp.user_id)
-        .single();
-
-      if (mpProfile?.email) {
+      if (approvedProfile?.email) {
         sendPaymentSuccessEmail(
-          mpProfile.email,
-          mpProfile.full_name || "",
+          approvedProfile.email,
+          approvedProfile.full_name || "",
           product?.name || "Cuanterus",
           plan.name,
         ).catch((err) => console.error("[Email] Manual payment email error:", err));

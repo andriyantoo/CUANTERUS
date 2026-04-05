@@ -627,7 +627,7 @@ export default function TradingJournalPage() {
               {/* Expanded details */}
               {expandedTrade === trade.id && (
                 <div className="px-4 pb-4 pt-0 border-t border-[#222229]">
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 text-sm">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mt-4 text-sm">
                     <div>
                       <p className="text-xs text-[#8B949E] mb-0.5">Entry</p>
                       <p className="text-[#F0F0F5] font-mono">{trade.entry_price}</p>

@@ -127,74 +127,76 @@ export default function MarketInsightPage() {
             const canAccess = hasAccess(insight);
 
             return (
-              <Card key={insight.id} className="flex flex-col sm:flex-row sm:items-center gap-4">
-                {/* Icon */}
-                <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center flex-shrink-0">
-                  <FileText size={24} className="text-red-400" />
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <h3 className="font-semibold text-[#F0F0F5] truncate">
-                      {insight.title}
-                    </h3>
-                    <Badge variant={categoryVariants[insight.category] || "gray"}>
-                      {categoryLabels[insight.category]}
-                    </Badge>
-                    <Badge variant="gray">
-                      {PRODUCT_NAMES[insight.product?.slug ?? ""] ?? ""}
-                    </Badge>
+              <Card key={insight.id} className="overflow-hidden !p-0">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 p-6">
+                  {/* Icon */}
+                  <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center flex-shrink-0">
+                    <FileText size={24} className="text-red-400" />
                   </div>
-                  {insight.description && (
-                    <p className="text-xs text-[#8B949E] mb-1 line-clamp-1">
-                      {insight.description}
-                    </p>
-                  )}
-                  <p className="text-xs text-[#8B949E]">
-                    {insight.published_at
-                      ? formatDate(insight.published_at)
-                      : formatDate(insight.created_at)}
-                  </p>
-                </div>
 
-                {/* Actions */}
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  {canAccess ? (
-                    <>
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() =>
-                          setViewing(viewing === insight.id ? null : insight.id)
-                        }
-                      >
-                        <Eye size={14} className="mr-1.5" />
-                        Lihat
-                      </Button>
-                      <Button
-                        size="sm"
-                        loading={downloading === insight.id}
-                        onClick={() => handleDownload(insight)}
-                      >
-                        <Download size={14} className="mr-1.5" />
-                        Download
-                      </Button>
-                    </>
-                  ) : (
-                    <div className="flex items-center gap-1.5 text-xs text-[#8B949E]">
-                      <Lock size={14} />
-                      <span>Upgrade untuk akses</span>
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <h3 className="font-semibold text-[#F0F0F5] truncate">
+                        {insight.title}
+                      </h3>
+                      <Badge variant={categoryVariants[insight.category] || "gray"}>
+                        {categoryLabels[insight.category]}
+                      </Badge>
+                      <Badge variant="gray">
+                        {PRODUCT_NAMES[insight.product?.slug ?? ""] ?? ""}
+                      </Badge>
                     </div>
-                  )}
+                    {insight.description && (
+                      <p className="text-xs text-[#8B949E] mb-1 line-clamp-1">
+                        {insight.description}
+                      </p>
+                    )}
+                    <p className="text-xs text-[#8B949E]">
+                      {insight.published_at
+                        ? formatDate(insight.published_at)
+                        : formatDate(insight.created_at)}
+                    </p>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {canAccess ? (
+                      <>
+                        <Button
+                          size="sm"
+                          variant="secondary"
+                          onClick={() =>
+                            setViewing(viewing === insight.id ? null : insight.id)
+                          }
+                        >
+                          <Eye size={14} className="mr-1.5" />
+                          Lihat
+                        </Button>
+                        <Button
+                          size="sm"
+                          loading={downloading === insight.id}
+                          onClick={() => handleDownload(insight)}
+                        >
+                          <Download size={14} className="mr-1.5" />
+                          Download
+                        </Button>
+                      </>
+                    ) : (
+                      <div className="flex items-center gap-1.5 text-xs text-[#8B949E]">
+                        <Lock size={14} />
+                        <span>Upgrade untuk akses</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
-                {/* Inline PDF viewer */}
+                {/* Inline PDF viewer — separate block below card content */}
                 {viewing === insight.id && canAccess && (
-                  <div className="w-full mt-4 sm:col-span-full">
+                  <div className="border-t border-[#222229] p-4">
                     <iframe
                       src={insight.file_url}
-                      className="w-full h-[350px] sm:h-[500px] md:h-[600px] rounded-xl border border-[#222229]"
+                      className="w-full h-[400px] sm:h-[500px] md:h-[700px] rounded-xl border border-[#222229]"
                       title={insight.title}
                     />
                   </div>

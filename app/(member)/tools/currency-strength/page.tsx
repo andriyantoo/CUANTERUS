@@ -272,7 +272,7 @@ export default function CurrencyStrengthPage() {
           {/* Heatmap */}
           <Card>
             <CardTitle className="text-sm">Strength Heatmap</CardTitle>
-            <div className="mt-3 grid grid-cols-4 gap-2">
+            <div className="mt-3 grid grid-cols-2 sm:grid-cols-4 gap-2">
               {data.map((item) => {
                 const bg = item.strength >= 40 ? "bg-green-500/20 border-green-500/30"
                   : item.strength >= 10 ? "bg-green-500/10 border-green-500/20"

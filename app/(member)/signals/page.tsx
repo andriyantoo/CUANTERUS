@@ -160,7 +160,7 @@ function SignalCard({ signal, hasAccess }: { signal: Signal; hasAccess: boolean 
 
         {/* Notes */}
         {signal.notes && (
-          <p className="text-xs text-[#8B949E] leading-relaxed border-t border-[#222229] pt-3">
+          <p className="text-xs text-[#8B949E] leading-relaxed border-t border-[#222229] pt-3 line-clamp-3">
             {signal.notes}
           </p>
         )}
