@@ -180,7 +180,26 @@ export default function ProfilePage() {
                 </p>
               </div>
             </div>
-            <Badge variant="lime">Terhubung</Badge>
+            <div className="flex items-center gap-2">
+              <Badge variant="lime">Terhubung</Badge>
+              <Button
+                size="sm"
+                variant="danger"
+                onClick={async () => {
+                  if (!confirm("Yakin lepas koneksi Discord? Role Discord kamu akan dicopot.")) return;
+                  const supabase = createClient();
+                  await supabase
+                    .from("profiles")
+                    .update({ discord_id: null, discord_username: null, discord_linked_at: null })
+                    .eq("id", user!.id);
+                  toast.success("Koneksi Discord dilepas");
+                  invalidateUserCache();
+                  window.location.reload();
+                }}
+              >
+                Lepas
+              </Button>
+            </div>
           </div>
         ) : (
           <a href="/api/discord/link">
