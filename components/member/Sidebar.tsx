@@ -18,6 +18,7 @@ import {
   X,
   Calculator,
   Wrench,
+  CalendarDays,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
@@ -33,6 +34,9 @@ const navItems = [
 
 const toolItems = [
   { href: "/tools/position-sizing", label: "Position Sizing", icon: Calculator },
+  { href: "/tools/journal", label: "Trading Journal", icon: BookOpen },
+  { href: "/tools/economic-calendar", label: "Economic Calendar", icon: CalendarDays },
+  { href: "/tools/currency-strength", label: "Currency Strength", icon: Activity },
 ];
 
 export function Sidebar({
